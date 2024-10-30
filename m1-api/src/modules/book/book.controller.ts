@@ -1,4 +1,6 @@
-import { Controller, Delete, Get, Param, Patch, Post } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, Patch, Post } from '@nestjs/common';
+import { CreateBookDto } from './createBook.dto';
+import { UpdateBookDto } from './updateBook.dto';
 
 @Controller('books')
 export class BookController {
@@ -13,13 +15,13 @@ export class BookController {
   }
 
   @Post()
-  public async createBook(): Promise<string> {
-    return 'Book created';
+  public async createBook(@Body() input: CreateBookDto): Promise<string> {
+    return 'Book created ' + input.title;
   }
 
   @Patch(':id')
-  public async updateBook(@Param('id') id: string): Promise<string> {
-    return 'Book updated ' + id;
+  public async updateBook(@Param('id') id: string, @Body() input: UpdateBookDto): Promise<string> {
+    return 'Book updated ' + id + input.yearPublished;
   }
 
   @Delete(':id')
