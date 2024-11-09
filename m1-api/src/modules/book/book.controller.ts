@@ -7,34 +7,37 @@ import {
   Patch,
   Post,
 } from '@nestjs/common';
+import { BookService } from './book.service';
 import { CreateBookDto } from './createBook.dto';
 import { UpdateBookDto } from './updateBook.dto';
 
 @Controller('books')
 export class BookController {
+  constructor(private readonly bookService: BookService) {}
+
   @Get()
   public async listBooks(): Promise<string> {
-    return 'All books';
+    return this.bookService.listBooks();
   }
 
   @Get(':id')
   public async getBook(@Param('id') id: string): Promise<string> {
-    return 'A book ' + id;
+    return this.bookService.getBook(id);
   }
 
   @Post()
   public async createBook(@Body() input: CreateBookDto): Promise<string> {
-    return 'Book created ' + input.title;
+    return this.bookService.createBook(input);
   }
 
   @Get(':search')
   public async searchBook(@Param('search') search: string): Promise<string> {
-    return 'Search book ' + search;
+    return this.bookService.searchBook(search);
   }
 
   @Post(':id/advices')
   public async createBookAdvice(@Param('id') id: string): Promise<string> {
-    return 'Book advice created ' + id;
+    return this.bookService.createBookAdvice(id);
   }
 
   @Patch(':id')
@@ -42,11 +45,11 @@ export class BookController {
     @Param('id') id: string,
     @Body() input: UpdateBookDto,
   ): Promise<string> {
-    return 'Book updated ' + id + input.yearPublished;
+    return this.bookService.updateBook(id, input);
   }
 
   @Delete(':id')
   public async deleteBook(@Param('id') id: string): Promise<string> {
-    return 'Book deleted ' + id;
+    return this.bookService.deleteBook(id);
   }
 }
