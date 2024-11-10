@@ -1,10 +1,16 @@
 import { Controller, Delete, Get, Patch, Post } from '@nestjs/common';
+import { AuthorPresenter } from './author.presenter';
+import { AuthorService } from './author.service';
 
 @Controller('Authors')
 export class AuthorController {
+  constructor(private readonly authorService: AuthorService) {}
+
   @Get()
-  public async listAuthor(): Promise<string> {
-    return 'All Author';
+  public async listAuthor(): Promise<AuthorPresenter[]> {
+    const authors = await this.authorService.listAuthors();
+
+    return authors.map(AuthorPresenter.from);
   }
 
   @Post()
