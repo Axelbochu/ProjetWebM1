@@ -9,6 +9,7 @@ import {
 } from '@nestjs/common';
 import { BookService } from './book.service';
 import { CreateBookDto } from './createBook.dto';
+import { NewAdviceDto } from './newAdvice.dto';
 import { UpdateBookDto } from './updateBook.dto';
 
 @Controller('books')
@@ -36,8 +37,11 @@ export class BookController {
   }
 
   @Post(':id/advices')
-  public async createBookAdvice(@Param('id') id: string): Promise<string> {
-    return this.bookService.createBookAdvice(id);
+  public async createBookAdvice(
+    @Param('id') id: string,
+    @Body() advice: NewAdviceDto,
+  ): Promise<string> {
+    return this.bookService.createBookAdvice(id, advice);
   }
 
   @Patch(':id')

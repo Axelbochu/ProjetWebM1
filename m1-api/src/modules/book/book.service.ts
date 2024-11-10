@@ -1,5 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { CreateBookDto } from './createBook.dto';
+import { NewAdviceDto } from './newAdvice.dto';
 import { UpdateBookDto } from './updateBook.dto';
 
 @Injectable()
@@ -20,8 +21,11 @@ export class BookService {
     return 'Search book ' + search;
   }
 
-  public async createBookAdvice(id: string): Promise<string> {
-    return 'Book advice created ' + id;
+  public async createBookAdvice(
+    id: string,
+    advice: NewAdviceDto,
+  ): Promise<string> {
+    return 'Book advice created ' + id + advice.stars;
   }
 
   public async updateBook(id: string, input: UpdateBookDto): Promise<string> {

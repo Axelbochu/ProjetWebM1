@@ -17,6 +17,11 @@ export class AuthorController {
     return 'A Author';
   }
 
+  @Get(':search')
+  public async searchAuthor(): Promise<string> {
+    return 'Search Author';
+  }
+
   @Get(':id/books')
   public async getAuthorBooks(): Promise<string> {
     return 'Author books';

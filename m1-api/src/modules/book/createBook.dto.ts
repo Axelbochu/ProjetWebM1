@@ -5,8 +5,11 @@ export class CreateBookDto {
   title: string;
 
   @IsInt()
-  @Max(new Date().getFullYear(), {message : "L'année de publication ne peut pas être supérieure à l'année en cours."})
-  yearPublished: number;  
+  @Max(new Date().getFullYear(), {
+    message:
+      "L'année de publication ne peut pas être supérieure à l'année en cours.",
+  })
+  yearPublished: number;
 
   @IsString()
   authorId: string;
