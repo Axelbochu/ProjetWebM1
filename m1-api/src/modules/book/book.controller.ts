@@ -8,21 +8,20 @@ import {
   Post,
 } from '@nestjs/common';
 import { BookService } from './book.service';
-import { CreateBookDto } from './createBook.dto';
-import { NewAdviceDto } from './newAdvice.dto';
-import { UpdateBookDto } from './updateBook.dto';
+import { CreateBookDto, UpdateBookDto, NewAdviceDto } from './book.dto';
+import { BookId } from '../database/entities/book.entity';
 
 @Controller('books')
 export class BookController {
   constructor(private readonly bookService: BookService) {}
 
   @Get()
-  public async listBooks(): Promise<string> {
+  public async getBooks() {
     return this.bookService.listBooks();
   }
 
   @Get(':id')
-  public async getBook(@Param('id') id: string): Promise<string> {
+  public async getBookById(@Param('id') id: BookId) {
     return this.bookService.getBook(id);
   }
 

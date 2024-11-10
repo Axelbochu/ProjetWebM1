@@ -1,12 +1,15 @@
 import { Injectable } from '@nestjs/common';
-import { CreateBookDto } from './createBook.dto';
-import { NewAdviceDto } from './newAdvice.dto';
-import { UpdateBookDto } from './updateBook.dto';
+import { CreateBookDto, UpdateBookDto, NewAdviceDto } from './book.dto';
+import { BookModel } from './book.model';
+import { BookRepository } from './book.reposiory';
 
 @Injectable()
 export class BookService {
-  public async listBooks(): Promise<string> {
-    return 'All books';
+
+  constructor(private readonly bookRepository: BookRepository){}
+
+  public async listBooks(): Promise<BookModel[]> {
+    return this.bookRepository.listBooks();
   }
 
   public async getBook(id: string): Promise<string> {
