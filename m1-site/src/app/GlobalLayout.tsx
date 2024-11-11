@@ -34,6 +34,9 @@ export const GlobalLayout: FC<Props> = ({ children }) => {
                 <Button onClick={() => router.push('/authors')} className={getButtonStyle('/authors')} aria-label="Authors">
                     <Image src="/images/icon/icons8-avatar-241.png" alt="Avatar" width={24} height={24} />
                 </Button>
+                <Button onClick={() => router.push('/authors_details')} className={getButtonStyle('/authors_details')} aria-label="Authors">
+                    <Image src="/images/icon/icons8-avatar-241.png" alt="Avatar" width={24} height={24} />
+                </Button>
             </div>
         </div>
         <div className="flex-1 bg-slate-50 p-6 ">
