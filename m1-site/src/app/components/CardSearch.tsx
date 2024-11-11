@@ -14,7 +14,7 @@ interface BookCardProps {
 export const Card: React.FC<BookCardProps> = ({
   coverImage,
   title, // titre du livre ou le nom de l'auteur en fonction de la page 
- line1,
+  line1,
   line2,
   rating, 
   isBook, // on verifie si c'est un livre ou un auteur

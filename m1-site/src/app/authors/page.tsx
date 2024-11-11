@@ -3,6 +3,9 @@ import { Card } from '../components/CardSearch';
 import { Title} from '.././components/Title';
 import { GlobalLayout } from "../GlobalLayout";
 import {SearchBar} from '../components/searchBar';
+import {useListAuthorProviders} from '../providers/useAuthorsProviders'
+import { useEffect } from "react"
+
 function authors(){
   const books = [
     {
@@ -12,6 +15,13 @@ function authors(){
       rating: 4, 
     },
   ];
+
+  const {loadAuthors} = useListAuthorProviders()
+
+  useEffect(() => {
+    loadAuthors()
+  }, [])
+
   const handleSearch = (query: string) => {
     console.log("Recherche en cours :", query);
     // Implémentez votre logique de recherche ici

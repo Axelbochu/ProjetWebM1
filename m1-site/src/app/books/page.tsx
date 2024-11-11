@@ -4,8 +4,10 @@ import { GlobalLayout } from "../GlobalLayout";
 import { Title } from '../components/Title';
 import { Card } from '../components/CardSearch';
 import {SearchBar} from '../components/searchBar';
+import { useEffect } from "react"
 
 function Books() {
+
   const books = [
     {
       coverImage: '/images/livres/harry2.jpg',
@@ -15,35 +17,8 @@ function Books() {
       rating: 4, 
       
     },
-    {
-      coverImage: '/images/livres/harry2.jpg',
-      title: "Harry Potter et la chambre des secrets",
-      line1: 'J.K. Rowling',
-      line2: 1998,
-      rating: 5,
-    },
-    {
-      coverImage: '/images/livres/onepiece1.png',
-      title: "Harry Potter et le prisonnier d'Azkaban",
-      line1: 'J.K. Rowling',
-      line2: 1999,
-      rating: 3,
-    },
-    {
-        coverImage: '/images/livres/onepiece1.png',
-        title: "Harry Potter et le prisonnier d'Azkaban",
-        line1: 'J.K. Rowling',
-        line2: 1999,
-        rating: 3,
-      },
-          {
-      coverImage: '/images/livres/onepiece1.png',
-      title: "Harry Potter et le prisonnier d'Azkaban",
-      line1: 'J.K. Rowling',
-      line2: 1999,
-      rating: 3,
-    },
   ];
+
 
   const handleSearch = (query: string) => {
     console.log("Recherche en cours :", query);
