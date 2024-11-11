@@ -7,8 +7,8 @@ export type AuthorModel = {
 };
 
 export type CreateAuthorModel = {
-  firstName : string
-  lastName : string
-  biography? : string 
-  photoPath? : string
-}
+  firstName: string;
+  lastName: string;
+  biography?: string;
+  photoPath?: string;
+};
