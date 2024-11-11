@@ -1,6 +1,10 @@
 import { Injectable } from '@nestjs/common';
 import { BookModel } from '../book/book.model';
-import { AuthorModel, CreateAuthorModel } from './author.model';
+import {
+  AuthorModel,
+  CreateAuthorModel,
+  UpdateAuthorModel,
+} from './author.model';
 import { AuthorRepository } from './author.repository';
 
 @Injectable()
@@ -27,5 +31,16 @@ export class AuthorService {
 
   public async searchAuthor(search: string): Promise<AuthorModel[]> {
     return this.authorRepository.searchAuthor(search);
+  }
+
+  public async updateAuthor(
+    id: string,
+    input: UpdateAuthorModel,
+  ): Promise<AuthorModel> {
+    return this.authorRepository.updateAuthor(id, input);
+  }
+
+  public async deleteAuthor(id: string): Promise<boolean> {
+    return this.authorRepository.deleteAuthor(id);
   }
 }

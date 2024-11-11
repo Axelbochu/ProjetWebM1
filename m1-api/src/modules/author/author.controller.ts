@@ -7,7 +7,7 @@ import {
   Patch,
   Post,
 } from '@nestjs/common';
-import { CreateAuthorDto } from './author.dto';
+import { CreateAuthorDto, UpdateAuthorDto } from './author.dto';
 import { AuthorPresenter } from './author.presenter';
 import { AuthorService } from './author.service';
 import { DetailsAuthorPresenter } from './detailsAuthor.presenter';
@@ -69,12 +69,20 @@ export class AuthorController {
   }
 
   @Patch(':id')
-  public async updateAuthor(): Promise<string> {
-    return 'Author updated';
+  public async updateAuthor(
+    @Param('id') id: string,
+    @Body() input: UpdateAuthorDto,
+  ): Promise<AuthorPresenter> {
+    const author = await this.authorService.updateAuthor(id, input);
+    const books = await this.authorService.getAuthorBooks(author.id);
+    const bookCount = books.length;
+    const averageRating = 0; //tmp
+
+    return AuthorPresenter.from(author, bookCount, averageRating);
   }
 
   @Delete(':id')
-  public async deleteAuthor(): Promise<string> {
-    return 'Author deleted';
+  public async deleteAuthor(@Param('id') id: string): Promise<boolean> {
+    return this.authorService.deleteAuthor(id);
   }
 }
