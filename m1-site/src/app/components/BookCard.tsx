@@ -1,5 +1,5 @@
 import React from 'react';
-import '../App.css'; // Assurez-vous que le fichier CSS est bien importé
+import '../App.css'; 
 import Image from 'next/image';
 
 interface BookCardProps {
