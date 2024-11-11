@@ -2,6 +2,7 @@
 import { Card } from '../components/CardSearch';
 import { Title} from '.././components/Title';
 import { GlobalLayout } from "../GlobalLayout";
+import {SearchBar} from '../components/searchBar';
 function authors(){
   const books = [
     {
@@ -11,11 +12,17 @@ function authors(){
       rating: 4, 
     },
   ];
+  const handleSearch = (query: string) => {
+    console.log("Recherche en cours :", query);
+    // Implémentez votre logique de recherche ici
+  };
+
     return(
         
         <GlobalLayout>
           <Title>Page auteurs</Title>
-          <div className="min-h-screen bg-gray-100 flex flex-wrap gap-6 justify-center p-6">
+          <SearchBar onSearch={handleSearch} />
+          <div className="min-h-screen bg-gray-100 ml-10 mr-10 flex flex-wrap  justify-center gap-6 ">
         {books.map((book, index) => (
           <Card
             key={index}
