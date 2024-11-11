@@ -54,4 +54,27 @@ export class AuthorRepository {
 
     return authors;
   }
+
+  public async updateAuthor(id: string, input: any): Promise<AuthorModel> {
+    const author = await this.authorRepository.findOneOrFail({
+      where: { id: id },
+    });
+
+    const result = await this.authorRepository.save({
+      ...author,
+      ...input,
+    });
+
+    return result;
+  }
+
+  public async deleteAuthor(id: string): Promise<boolean> {
+    const author = await this.authorRepository.findOneOrFail({
+      where: { id: id },
+    });
+
+    await this.authorRepository.remove(author);
+
+    return true;
+  }
 }
