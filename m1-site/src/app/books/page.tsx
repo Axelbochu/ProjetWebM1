@@ -8,6 +8,7 @@ function books(){
     return(
         <GlobalLayout>
             <Title>Books page</Title>
+
             </GlobalLayout>
     ) 
 }

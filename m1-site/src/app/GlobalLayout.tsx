@@ -26,13 +26,13 @@ export const GlobalLayout: FC<Props> = ({ children }) => {
         <div className="text-center   w-24 min-h-screen bg-custom-light">
             <div className="">
                 <Button onClick={() => router.push('/')} className={getButtonStyle('/')} aria-label="Home">
-                    <Image src="/icon/icons8-accueil-24 (1).png" alt="Avatar" width={24} height={24} />
+                    <Image src="/images/icon/icons8-accueil-24 (1).png" alt="Avatar" width={24} height={24} />
                 </Button>
                 <Button onClick={() => router.push('/books')} className={getButtonStyle('/books')} aria-label="Books">
-                    <Image src="/icon/icons8-livre-24 (2).png" alt="Livre" width={24} height={24} />
+                    <Image src="/images/icon/icons8-livre-24 (2).png" alt="Livre" width={24} height={24} />
                 </Button>
                 <Button onClick={() => router.push('/authors')} className={getButtonStyle('/authors')} aria-label="Authors">
-                    <Image src="/icon/icons8-avatar-241.png" alt="Avatar" width={24} height={24} />
+                    <Image src="/images/icon/icons8-avatar-241.png" alt="Avatar" width={24} height={24} />
                 </Button>
             </div>
         </div>
