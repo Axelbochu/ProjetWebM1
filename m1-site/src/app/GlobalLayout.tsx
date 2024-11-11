@@ -1,19 +1,19 @@
-'use client'
-import { usePathname, useRouter } from "next/navigation"
-import { FC, ReactElement } from "react"
-import Image from "next/image"
-import './GlobalLayout.css'
-import { Button } from "./components/Button"
+'use client';
+import { usePathname, useRouter } from "next/navigation";
+import { FC, ReactElement } from "react";
+import Image from "next/image";
+import './GlobalLayout.css';
+import { Button } from "./components/Button";
 
 type Props = {
-  children: ReactElement | ReactElement[]
-}
+  children: ReactElement | ReactElement[];
+};
 
 export const GlobalLayout: FC<Props> = ({ children }) => {
-  const router = useRouter()
-  const pathname = usePathname()
-  
-  // Nous permet de changer le style pour savoir sur quelle page nous sommes
+  const router = useRouter();
+  const pathname = usePathname();
+
+  // Fonction pour changer le style des boutons en fonction de la page active
   const getButtonStyle = (path: string) => {
     return pathname === path
       ? 'bg-red-400 ' // Active state
@@ -22,27 +22,30 @@ export const GlobalLayout: FC<Props> = ({ children }) => {
 
   return (
     <>
-      <div className="flex min-h-screen ">
-        <div className="text-center   w-24 min-h-screen bg-custom-light">
-            <div className="">
-                <Button onClick={() => router.push('/')} className={getButtonStyle('/')} aria-label="Home">
-                    <Image src="/images/icon/icons8-accueil-24 (1).png" alt="Avatar" width={24} height={24} />
-                </Button>
-                <Button onClick={() => router.push('/books')} className={getButtonStyle('/books')} aria-label="Books">
-                    <Image src="/images/icon/icons8-livre-24 (2).png" alt="Livre" width={24} height={24} />
-                </Button>
-                <Button onClick={() => router.push('/authors')} className={getButtonStyle('/authors')} aria-label="Authors">
-                    <Image src="/images/icon/icons8-avatar-241.png" alt="Avatar" width={24} height={24} />
-                </Button>
-                <Button onClick={() => router.push('/authors_details')} className={getButtonStyle('/authors_details')} aria-label="Authors">
-                    <Image src="/images/icon/icons8-avatar-241.png" alt="Avatar" width={24} height={24} />
-                </Button>
-            </div>
+      <div className="flex min-h-screen relative"> {/* Ajout de relative ici */}
+        {/* Barre latérale */}
+        <div className="text-center w-24 min-h-screen bg-custom-light flex flex-col">
+          <div className="flex-1">
+            <Button onClick={() => router.push('/')} className={getButtonStyle('/')} aria-label="Home">
+              <Image src="/images/icon/icons8-accueil-24 (1).png" alt="Avatar" width={24} height={24} />
+            </Button>
+            <Button onClick={() => router.push('/books')} className={getButtonStyle('/books')} aria-label="Books">
+              <Image src="/images/icon/icons8-livre-24 (2).png" alt="Livre" width={24} height={24} />
+            </Button>
+            <Button onClick={() => router.push('/authors')} className={getButtonStyle('/authors')} aria-label="Authors">
+              <Image src="/images/icon/icons8-avatar-241.png" alt="Avatar" width={24} height={24} />
+            </Button>
+            <Button onClick={() => router.push('/authors_details')} className={getButtonStyle('/authors_details')} aria-label="Authors">
+              <Image src="/images/icon/icons8-avatar-241.png" alt="Avatar" width={24} height={24} />
+            </Button>
+          </div>
         </div>
-        <div className="flex-1 bg-slate-50 p-6 ">
+
+        {/* Contenu principal */}
+        <div className="flex-1 bg-slate-50 p-6">
           {children}
         </div>
       </div>
     </>
-  )
-}
+  );
+};
