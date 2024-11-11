@@ -22,7 +22,7 @@ export const GlobalLayout: FC<Props> = ({ children }) => {
 
   return (
     <>
-      <div className="flex min-h-screen">
+      <div className="flex min-h-screen ">
         <div className="text-center   w-24 min-h-screen bg-custom-light">
             <div className="">
                 <Button onClick={() => router.push('/')} className={getButtonStyle('/')} aria-label="Home">
@@ -36,7 +36,7 @@ export const GlobalLayout: FC<Props> = ({ children }) => {
                 </Button>
             </div>
         </div>
-        <div className="flex-1 bg-slate-50 p-6">
+        <div className="flex-1 bg-slate-50 p-6 ">
           {children}
         </div>
       </div>

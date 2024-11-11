@@ -46,6 +46,11 @@ function App() {
   return (
   <GlobalLayout>
     <Title>Bonne Lecture</Title>
+    <p className=" text-left text-custom-dark font-elegant ml-10 mb-10  max-w-md ">
+        Découvrez notre sélection de livres captivants, explorez de nouveaux genres,
+        et laissez-vous inspirer par des histoires inoubliables. Que vous soyez passionné de fiction, 
+        de biographies, ou de science, il y a un livre pour chaque lecteur ici.
+    </p>
     <div className="flex flex-wrap gap-8 ml-10  ">
       {books.map((book, index) => (
         <BookCard
