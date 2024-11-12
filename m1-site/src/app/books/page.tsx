@@ -24,7 +24,7 @@ function Books() {
         {books.map((book) => (
           <Card
             key={book.id}
-            coverImage={book.coverImage || "/images/livres/harry2.png"} 
+            coverImage={book.coverImage || "/images/livres/harry2.jpg"} 
             title={book.title}
             line1={book.author.firstName + " " + book.author.lastName}
             line2={book.yearPublished}

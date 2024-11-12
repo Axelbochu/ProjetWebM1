@@ -12,6 +12,9 @@
 # production
 /build
 
+# Ignorer les fichiers .pack.gz
+*.pack.gz
+
 # misc
 .DS_Store
 .env.local

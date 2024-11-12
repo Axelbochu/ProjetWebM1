@@ -16,16 +16,7 @@ export const useListAuthorProviders = () => {
       });
   };
 
-  // Function to create a new author following the `onCreate` pattern
-  const onCreateAuthor = (input: Omit<CreateAuthorModel, 'id'>) => {
-    axios.post('http://localhost:3001/authors', { author: input })
-      .then(() => {
-        loadAuthors(); // Refresh the author list after creation
-      })
-      .catch((error) => {
-        console.error('Error adding author:', error);
-      })
-  };
+  
 
   useEffect(() => {
     loadAuthors(); // Automatically load authors on mount
@@ -34,6 +25,6 @@ export const useListAuthorProviders = () => {
   return {
     authors,
     loadAuthors,
-    onCreateAuthor, // Export the onCreateAuthor function for use elsewhere
+     // Export the onCreateAuthor function for use elsewhere
   };
 };

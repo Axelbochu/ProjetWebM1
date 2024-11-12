@@ -34,8 +34,8 @@ function authors(){
           {authors.map((author : AuthorModel) => (
           <Card
             key={author.id}
-            coverImage={author.authorImage}
-            title={author.firstName + author.lastName}
+            coverImage={author.authorImage  || '/images/auteur/jk.jpg'}
+            title={author.firstName + ' ' + author.lastName}
             line1={"Nombre de livres :"}
             line2={author.numberBook || 0}
             rating={author.rating || 0}
