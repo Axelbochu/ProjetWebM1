@@ -51,7 +51,9 @@ export class BookController {
   }
 
   @Get('/searchBook/:search')
-  public async searchBook(@Param('search') search: string): Promise<BookPresenter[]> {
+  public async searchBook(
+    @Param('search') search: string,
+  ): Promise<BookPresenter[]> {
     const books = await this.bookService.searchBook(search);
 
     return await Promise.all(
@@ -66,14 +68,17 @@ export class BookController {
 
   @Patch(':id')
   public async updateBook(
-    @Param('id') id: string,
+    @Param('id') id: BookId,
     @Body() input: UpdateBookDto,
-  ): Promise<string> {
-    return this.bookService.updateBook(id, input);
+  ): Promise<BookPresenter> {
+    const book = await this.bookService.updateBook(id, input);
+    const averageRating = 0; //valeur temporaire
+
+    return BookPresenter.from(book, book.author, averageRating);
   }
 
   @Delete(':id')
-  public async deleteBook(@Param('id') id: string): Promise<string> {
+  public async deleteBook(@Param('id') id: BookId): Promise<boolean> {
     return this.bookService.deleteBook(id);
   }
 }
