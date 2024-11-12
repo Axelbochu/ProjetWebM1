@@ -47,7 +47,7 @@ export const BookCard: React.FC<BookCardProps> = ({ coverImage, title, author, r
       {/* Informations sur la face arrière, affichées au hover */}
       <div className="absolute top-0 left-0 w-full h-full bg-custom-dark text-white p-4 shadow-lg opacity-0 group-hover:opacity-100 transition-opacity duration-300">
         <h3 className="text-sm font-bold mb-2 line-clamp-4">{title}</h3>
-        <p className="text-sm mb-1 truncate">{author}</p>
+        <p className="text-sm mb-1 line-clamp-2">{author}</p>
         <p className="text-sm mb-1">{date}</p>
         <div className="flex mb-2">{renderStars()}</div>
       </div>
