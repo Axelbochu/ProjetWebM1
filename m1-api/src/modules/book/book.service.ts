@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { BookId } from '../database/entities/book.entity';
-import { NewAdviceDto, UpdateBookDto } from './book.dto';
+import { UpdateBookDto } from './book.dto';
 import { BookModel, CreateBookModel } from './book.model';
 import { BookRepository } from './book.reposiory';
 
@@ -21,15 +21,8 @@ export class BookService {
   }
 
   //todo : à implémenter ---->
-  public async searchBook(search: string): Promise<string> {
-    return 'Search book ' + search;
-  }
-
-  public async createBookAdvice(
-    id: string,
-    advice: NewAdviceDto,
-  ): Promise<string> {
-    return 'Book advice created ' + id + advice.stars;
+  public async searchBook(search: string): Promise<BookModel[]> {
+    return this.bookRepository.searchBook(search);
   }
 
   public async updateBook(id: string, input: UpdateBookDto): Promise<string> {

@@ -5,7 +5,6 @@ import {
   IsOptional,
   IsString,
   Max,
-  Min,
 } from 'class-validator';
 
 export class CreateBookDto {
@@ -31,20 +30,6 @@ export class CreateBookDto {
   picture?: string;
 }
 
-export class NewAdviceDto {
-  @IsInt()
-  @Max(5, { message: 'La note ne peut pas être supérieure à 5.' })
-  @Min(1, { message: 'La note ne peut pas être inférieure à 1.' })
-  stars: number;
-
-  @IsString()
-  @IsOptional()
-  comment: string;
-
-  @IsDate()
-  createtionDate: Date;
-}
-
 export class UpdateBookDto {
   @IsOptional()
   @IsString()
@@ -61,4 +46,12 @@ export class UpdateBookDto {
   @IsOptional()
   @IsString()
   authorId: string;
+
+  @IsNumber()
+  @IsOptional()
+  price?: number;
+
+  @IsString()
+  @IsOptional()
+  picture?: string;
 }
