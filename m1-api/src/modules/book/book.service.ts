@@ -20,16 +20,19 @@ export class BookService {
     return this.bookRepository.createBook(input);
   }
 
-  //todo : à implémenter ---->
   public async searchBook(search: string): Promise<BookModel[]> {
     return this.bookRepository.searchBook(search);
   }
 
-  public async updateBook(id: string, input: UpdateBookDto): Promise<string> {
-    return 'Book updated ' + id + input.yearPublished;
+  //TODO: Implement the following methods
+  public async updateBook(
+    id: BookId,
+    input: UpdateBookDto,
+  ): Promise<BookModel> {
+    return this.bookRepository.updateBook(id, input);
   }
 
-  public async deleteBook(id: string): Promise<string> {
-    return 'Book deleted ' + id;
+  public async deleteBook(id: BookId): Promise<boolean> {
+    return this.bookRepository.deleteBook(id);
   }
 }

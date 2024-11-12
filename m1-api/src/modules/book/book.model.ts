@@ -22,3 +22,11 @@ export type CreateBookModel = {
   price?: number;
   picture?: string;
 };
+
+export type UpdateBookModel = {
+  title?: string;
+  yearPublished?: number;
+  authorId?: string;
+  price?: number;
+  picture?: string;
+};
