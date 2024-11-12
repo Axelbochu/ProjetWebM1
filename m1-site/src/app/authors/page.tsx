@@ -5,6 +5,7 @@ import { GlobalLayout } from "../GlobalLayout";
 import {SearchBar} from '../components/searchBar';
 import {useListAuthorProviders} from '../providers/useAuthorsProviders'
 import { useEffect } from "react"
+import { AuthorModel } from '../models/AuthorsModel';
 
 function authors(){
   const books = [
@@ -16,11 +17,8 @@ function authors(){
     },
   ];
 
-  const {loadAuthors} = useListAuthorProviders()
+  const { authors } = useListAuthorProviders();
 
-  useEffect(() => {
-    loadAuthors()
-  }, [])
 
   const handleSearch = (query: string) => {
     console.log("Recherche en cours :", query);
@@ -33,16 +31,16 @@ function authors(){
           <Title>Page auteurs</Title>
           <SearchBar onSearch={handleSearch} />
           <div className="min-h-screen bg-gray-100 ml-10 mr-10 flex flex-wrap  justify-center gap-6 ">
-        {books.map((book, index) => (
+          {authors.map((author : AuthorModel) => (
           <Card
-            key={index}
-            coverImage={book.coverImage}
-            title={book.title}
+            key={author.id}
+            coverImage={author.authorImage}
+            title={author.firstName + author.lastName}
             line1={"Nombre de livres :"}
-            line2={book.line2}
-            rating={book.rating} 
-            isBook = {false}
-            onClick={() => console.log(`Détails de ${book.title}`)}
+            line2={author.numberBook || 0}
+            rating={author.rating || 0}
+            isBook={false}
+            onClick={() => console.log(`Détails de ${author.lastName}`)}
           />
         ))}
       </div>
