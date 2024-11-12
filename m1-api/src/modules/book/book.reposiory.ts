@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { DataSource } from 'typeorm';
+import { DataSource, ILike } from 'typeorm';
 import { AuthorEntity } from '../database/entities/author.entity';
 import { BookEntity, BookId } from '../database/entities/book.entity';
 import { BookModel, CreateBookModel } from './book.model';
@@ -40,4 +40,15 @@ export class BookRepository {
 
     return savedBook;
   }
+
+  public async searchBook(search: string): Promise<BookModel[]> {
+      const books = await this.bookRepository.find({
+        where: {
+          title: ILike(`${search}%`) // Le titre doit commencer par la chaîne de recherche
+        }
+      });
+
+      return books;
+  }
+
 }

@@ -61,4 +61,12 @@ export class UpdateBookDto {
   @IsOptional()
   @IsString()
   authorId: string;
+
+  @IsNumber()
+  @IsOptional()
+  price?: number;
+
+  @IsString()
+  @IsOptional()
+  picture?: string;
 }
