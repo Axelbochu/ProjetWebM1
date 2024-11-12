@@ -525,11 +525,17 @@ video {
 .right-14 {
   right: 3.5rem;
 }
+.right-20 {
+  right: 5rem;
+}
 .top-0 {
   top: 0px;
 }
 .top-14 {
   top: 3.5rem;
+}
+.top-16 {
+  top: 4rem;
 }
 .m-2 {
   margin: 0.5rem;
@@ -542,6 +548,9 @@ video {
 }
 .mb-2 {
   margin-bottom: 0.5rem;
+}
+.mb-4 {
+  margin-bottom: 1rem;
 }
 .ml-10 {
   margin-left: 2.5rem;
@@ -557,6 +566,9 @@ video {
 }
 .mt-6 {
   margin-top: 1.5rem;
+}
+.mt-8 {
+  margin-top: 2rem;
 }
 .line-clamp-4 {
   overflow: hidden;
@@ -578,6 +590,9 @@ video {
 }
 .h-96 {
   height: 24rem;
+}
+.h-\[70vh\] {
+  height: 70vh;
 }
 .h-full {
   height: 100%;
@@ -641,14 +656,18 @@ video {
   text-overflow: ellipsis;
   white-space: nowrap;
 }
+.rounded {
+  border-radius: 0.25rem;
+}
 .rounded-full {
   border-radius: 9999px;
 }
 .rounded-xl {
   border-radius: 0.75rem;
 }
-.rounded {
-  border-radius: 0.25rem;
+.bg-blue-500 {
+  --tw-bg-opacity: 1;
+  background-color: rgb(59 130 246 / var(--tw-bg-opacity));
 }
 .bg-custom-dark {
   --tw-bg-opacity: 1;
@@ -662,6 +681,10 @@ video {
   --tw-bg-opacity: 1;
   background-color: rgb(243 244 246 / var(--tw-bg-opacity));
 }
+.bg-red-200 {
+  --tw-bg-opacity: 1;
+  background-color: rgb(254 202 202 / var(--tw-bg-opacity));
+}
 .bg-red-400 {
   --tw-bg-opacity: 1;
   background-color: rgb(248 113 113 / var(--tw-bg-opacity));
@@ -673,10 +696,6 @@ video {
 .bg-white {
   --tw-bg-opacity: 1;
   background-color: rgb(255 255 255 / var(--tw-bg-opacity));
-}
-.bg-blue-500 {
-  --tw-bg-opacity: 1;
-  background-color: rgb(59 130 246 / var(--tw-bg-opacity));
 }
 .p-2 {
   padding: 0.5rem;
@@ -716,6 +735,14 @@ video {
 }
 .font-elegant {
   font-family: "Playfair Display", serif;
+}
+.text-3xl {
+  font-size: 1.875rem;
+  line-height: 2.25rem;
+}
+.text-4xl {
+  font-size: 2.25rem;
+  line-height: 2.5rem;
 }
 .text-5xl {
   font-size: 3rem;
@@ -804,6 +831,28 @@ video {
 }
 .group:hover .group-hover\:opacity-100 {
   opacity: 1;
+}
+@media (min-width: 640px) {
+
+  .sm\:w-1\/2 {
+    width: 50%;
+  }
+}
+@media (min-width: 1024px) {
+
+  .lg\:w-3\/5 {
+    width: 60%;
+  }
+}
+@media (min-width: 1280px) {
+
+  .xl\:w-1\/4 {
+    width: 25%;
+  }
+
+  .xl\:w-3\/4 {
+    width: 75%;
+  }
 }
 @media (prefers-color-scheme: dark) {
 

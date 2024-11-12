@@ -24,7 +24,7 @@ export const useListAuthorProviders = () => {
       })
       .catch((error) => {
         console.error('Error adding author:', error);
-      });
+      })
   };
 
   useEffect(() => {
