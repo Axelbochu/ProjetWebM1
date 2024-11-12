@@ -9,7 +9,15 @@ module.exports = {
     "./src/**/*.{js,ts,jsx,tsx,mdx}",
   ],
   theme: {
-    extend: {},
+    extend: {
+      colors: {
+        'custom-light': '#F0EEE3', 
+        'custom-dark': '#272935',
+      },
+      fontFamily: {
+        'elegant': ['"Playfair Display"', 'serif'],
+      },
+    },
   },
   plugins: [],
 }
