@@ -7,6 +7,7 @@ import {
   Patch,
   Post,
 } from '@nestjs/common';
+import { AdviceService } from '../advices/advice.service';
 import { BookId } from '../database/entities/book.entity';
 import { CreateBookDto, UpdateBookDto } from './book.dto';
 import { BookPresenter } from './book.presenter';
@@ -15,7 +16,10 @@ import { DetailsBookPresenter } from './detailsBook.presenter';
 
 @Controller('books')
 export class BookController {
-  constructor(private readonly bookService: BookService) {}
+  constructor(
+    private readonly bookService: BookService,
+    private readonly adviceService: AdviceService,
+  ) {}
 
   @Get()
   public async getBooks(): Promise<BookPresenter[]> {
@@ -24,9 +28,20 @@ export class BookController {
     return await Promise.all(
       books.map(async (book) => {
         const author = book.author;
-        const averageRating = 0; //valeur temporaire
-
-        return BookPresenter.from(book, author, averageRating);
+        const advices = await this.adviceService.listAdvicesForBook(book.id);
+        // Si aucun avis, retourner 0 (ou une valeur par défaut)
+        if (advices.length === 0) {
+          const averageRating = 0;
+          return BookPresenter.from(book, author, averageRating);
+        } else {
+          // Calculer la moyenne des stars
+          const totalStars = advices.reduce(
+            (sum, advice) => sum + advice.stars,
+            0,
+          );
+          const averageRating = totalStars / advices.length;
+          return BookPresenter.from(book, author, averageRating);
+        }
       }),
     );
   }
@@ -36,44 +51,69 @@ export class BookController {
     @Param('id') id: BookId,
   ): Promise<DetailsBookPresenter> {
     const book = await this.bookService.getBook(id);
-    console.log(book);
+    const advices = await this.adviceService.listAdvicesForBook(id);
 
-    return DetailsBookPresenter.from(book, book.author);
+    return DetailsBookPresenter.from(book, book.author, advices);
   }
 
   @Post()
   public async createBook(
     @Body() input: CreateBookDto,
-  ): Promise<DetailsBookPresenter> {
+  ): Promise<BookPresenter> {
     const book = await this.bookService.createBook(input);
 
-    return DetailsBookPresenter.from(book, book.author);
+    return BookPresenter.from(book, book.author, 0);
   }
 
   @Get('/searchBook/:search')
-  public async searchBook(@Param('search') search: string): Promise<BookPresenter[]> {
+  public async searchBook(
+    @Param('search') search: string,
+  ): Promise<BookPresenter[]> {
     const books = await this.bookService.searchBook(search);
 
     return await Promise.all(
       books.map(async (book) => {
         const author = book.author;
-        const averageRating = 0; //valeur temporaire
-
-        return BookPresenter.from(book, author, averageRating);
+        const advices = await this.adviceService.listAdvicesForBook(book.id);
+        // Si aucun avis, retourner 0 (ou une valeur par défaut)
+        if (advices.length === 0) {
+          const averageRating = 0;
+          return BookPresenter.from(book, author, averageRating);
+        } else {
+          // Calculer la moyenne des stars
+          const totalStars = advices.reduce(
+            (sum, advice) => sum + advice.stars,
+            0,
+          );
+          const averageRating = totalStars / advices.length;
+          return BookPresenter.from(book, author, averageRating);
+        }
       }),
     );
   }
 
   @Patch(':id')
   public async updateBook(
-    @Param('id') id: string,
+    @Param('id') id: BookId,
     @Body() input: UpdateBookDto,
-  ): Promise<string> {
-    return this.bookService.updateBook(id, input);
+  ): Promise<BookPresenter> {
+    const book = await this.bookService.updateBook(id, input);
+    const author = book.author;
+    const advices = await this.adviceService.listAdvicesForBook(book.id);
+    // Si aucun avis, retourner 0 (ou une valeur par défaut)
+    if (advices.length === 0) {
+      const averageRating = 0;
+      return BookPresenter.from(book, author, averageRating);
+    } else {
+      // Calculer la moyenne des stars
+      const totalStars = advices.reduce((sum, advice) => sum + advice.stars, 0);
+      const averageRating = totalStars / advices.length;
+      return BookPresenter.from(book, author, averageRating);
+    }
   }
 
   @Delete(':id')
-  public async deleteBook(@Param('id') id: string): Promise<string> {
+  public async deleteBook(@Param('id') id: BookId): Promise<boolean> {
     return this.bookService.deleteBook(id);
   }
 }

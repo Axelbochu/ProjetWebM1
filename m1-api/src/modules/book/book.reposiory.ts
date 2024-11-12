@@ -2,14 +2,14 @@ import { Injectable } from '@nestjs/common';
 import { DataSource, ILike } from 'typeorm';
 import { AuthorEntity } from '../database/entities/author.entity';
 import { BookEntity, BookId } from '../database/entities/book.entity';
-import {  BookModel, CreateBookModel } from './book.model';
+import { BookModel, CreateBookModel, UpdateBookModel } from './book.model';
 
 @Injectable()
 export class BookRepository {
   private readonly bookRepository = this.dataSource.getRepository(BookEntity);
   private readonly authorRepository =
     this.dataSource.getRepository(AuthorEntity);
-  
+
   constructor(private readonly dataSource: DataSource) {}
 
   public async listBooks(): Promise<BookModel[]> {
@@ -42,15 +42,40 @@ export class BookRepository {
   }
 
   public async searchBook(search: string): Promise<BookModel[]> {
-      const books = await this.bookRepository.find({
-        where: {
-          title: ILike(`${search}%`) // Le titre doit commencer par la chaîne de recherche
-        }
-      });
+    const books = await this.bookRepository.find({
+      where: {
+        title: ILike(`${search}%`), // Le titre doit commencer par la chaîne de recherche
+      },
+      relations: { author: true },
+    });
 
-      return books;
+    return books;
   }
 
-  
+  public async updateBook(
+    id: BookId,
+    input: UpdateBookModel,
+  ): Promise<BookModel> {
+    const book = await this.bookRepository.findOneOrFail({
+      where: { id: id },
+      relations: { author: true },
+    });
 
+    const updatedBook = await this.bookRepository.save({
+      ...book,
+      ...input,
+    });
+
+    return updatedBook;
+  }
+
+  public async deleteBook(id: BookId): Promise<boolean> {
+    const book = await this.bookRepository.findOneOrFail({
+      where: { id },
+    });
+
+    await this.bookRepository.remove(book);
+
+    return true;
+  }
 }
