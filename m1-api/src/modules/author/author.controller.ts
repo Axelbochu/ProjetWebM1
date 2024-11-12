@@ -7,6 +7,7 @@ import {
   Patch,
   Post,
 } from '@nestjs/common';
+import { AdviceService } from '../advices/advice.service';
 import { CreateAuthorDto, UpdateAuthorDto } from './author.dto';
 import { AuthorPresenter } from './author.presenter';
 import { AuthorService } from './author.service';
@@ -14,7 +15,10 @@ import { DetailsAuthorPresenter } from './detailsAuthor.presenter';
 
 @Controller('Authors')
 export class AuthorController {
-  constructor(private readonly authorService: AuthorService) {}
+  constructor(
+    private readonly authorService: AuthorService,
+    private readonly adviceService: AdviceService,
+  ) {}
 
   @Get()
   public async listAuthor(): Promise<AuthorPresenter[]> {
@@ -22,9 +26,30 @@ export class AuthorController {
 
     return await Promise.all(
       authors.map(async (author) => {
-        const books = await this.authorService.getAuthorBooks(author.id); //On récupère tout les livres
-        const bookCount = books.length; //on les compte car c'est la valeur qui nous intéresse
-        const averageRating = 0; //valeur temporaire
+        const books = await this.authorService.getAuthorBooks(author.id); // On récupère tous les livres de l'auteur
+        const bookCount = books.length; // On compte le nombre de livres de l'auteur
+
+        let totalRating = 0;
+        let totalBooksWithRating = 0;
+
+        // On parcourt chaque livre pour récupérer les avis et calculer la moyenne
+        for (const book of books) {
+          const advices = await this.adviceService.listAdvicesForBook(book.id); // Récupère les avis du livre
+
+          if (advices.length > 0) {
+            const totalStars = advices.reduce(
+              (sum, advice) => sum + advice.stars,
+              0,
+            );
+            const averageRating = totalStars / advices.length;
+            totalRating += averageRating; // On ajoute la note moyenne du livre à la somme totale
+            totalBooksWithRating++; // On compte les livres ayant des avis
+          }
+        }
+
+        // Si aucun livre n'a de note, on met la moyenne à 0, sinon on calcule la moyenne générale
+        const averageRating =
+          totalBooksWithRating > 0 ? totalRating / totalBooksWithRating : 0;
 
         return AuthorPresenter.from(author, bookCount, averageRating);
       }),
@@ -55,15 +80,36 @@ export class AuthorController {
   public async searchAuthor(
     @Param('search') search: string,
   ): Promise<AuthorPresenter[]> {
-    const authors = await this.authorService.searchAuthor(search);
+    const authors = await this.authorService.searchAuthor(search); // Recherche des auteurs
 
     return await Promise.all(
       authors.map(async (author) => {
-        const books = await this.authorService.getAuthorBooks(author.id); //On récupère tout les livres
-        const bookCount = books.length; //on les compte car c'est la valeur qui nous intéresse
-        const averageRating = 0; //valeur temporaire
+        const books = await this.authorService.getAuthorBooks(author.id); // On récupère tous les livres de l'auteur
+        const bookCount = books.length; // On compte le nombre de livres
 
-        return AuthorPresenter.from(author, bookCount, averageRating);
+        let totalRating = 0;
+        let totalBooksWithRating = 0;
+
+        // On parcourt chaque livre pour récupérer les avis et calculer la moyenne
+        for (const book of books) {
+          const advices = await this.adviceService.listAdvicesForBook(book.id); // Récupère les avis du livre
+
+          if (advices.length > 0) {
+            const totalStars = advices.reduce(
+              (sum, advice) => sum + advice.stars,
+              0,
+            );
+            const averageRating = totalStars / advices.length;
+            totalRating += averageRating; // On ajoute la note moyenne du livre à la somme totale
+            totalBooksWithRating++; // On compte les livres ayant des avis
+          }
+        }
+
+        // Si aucun livre n'a de note, on met la moyenne à 0, sinon on calcule la moyenne générale
+        const averageRating =
+          totalBooksWithRating > 0 ? totalRating / totalBooksWithRating : 0;
+
+        return AuthorPresenter.from(author, bookCount, averageRating); // Retourne le presenter de l'auteur avec la moyenne des livres
       }),
     );
   }
@@ -73,11 +119,40 @@ export class AuthorController {
     @Param('id') id: string,
     @Body() input: UpdateAuthorDto,
   ): Promise<AuthorPresenter> {
+    // Mise à jour de l'auteur
     const author = await this.authorService.updateAuthor(id, input);
-    const books = await this.authorService.getAuthorBooks(author.id);
-    const bookCount = books.length;
-    const averageRating = 0; //tmp
 
+    // Récupération des livres de l'auteur
+    const books = await this.authorService.getAuthorBooks(author.id);
+
+    // Calcul du nombre de livres
+    const bookCount = books.length;
+
+    // Variables pour calculer la moyenne des notes des livres
+    let totalRating = 0;
+    let totalBooksWithRating = 0;
+
+    // Parcours des livres pour calculer la moyenne des avis
+    for (const book of books) {
+      const advices = await this.adviceService.listAdvicesForBook(book.id);
+
+      if (advices.length > 0) {
+        const totalStars = advices.reduce(
+          (sum, advice) => sum + advice.stars,
+          0,
+        );
+        const averageRating = totalStars / advices.length;
+        totalRating += averageRating; // Ajouter la note moyenne du livre à la somme totale
+        totalBooksWithRating++; // Compter les livres ayant des avis
+      }
+    }
+
+    // Si un ou plusieurs livres ont des avis, on calcule la moyenne générale
+    // Sinon, on met la moyenne à 0
+    const averageRating =
+      totalBooksWithRating > 0 ? totalRating / totalBooksWithRating : 0;
+
+    // Retourner l'auteur mis à jour avec les informations de livre
     return AuthorPresenter.from(author, bookCount, averageRating);
   }
 

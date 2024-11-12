@@ -9,6 +9,7 @@ export class BookPresenter {
   author: AuthorModel;
   averageRating: number | null;
   photoPath: string;
+  price: number | null;
 
   private constructor(book: BookPresenter) {
     Object.assign(this, book);
@@ -26,6 +27,7 @@ export class BookPresenter {
       author: author,
       averageRating: averageRating,
       photoPath: book.picture,
+      price: book.price,
     });
   }
 }

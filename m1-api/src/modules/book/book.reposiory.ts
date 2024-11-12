@@ -46,6 +46,7 @@ export class BookRepository {
       where: {
         title: ILike(`${search}%`), // Le titre doit commencer par la chaîne de recherche
       },
+      relations: { author: true },
     });
 
     return books;
@@ -59,8 +60,6 @@ export class BookRepository {
       where: { id: id },
       relations: { author: true },
     });
-
-    console.log(book);
 
     const updatedBook = await this.bookRepository.save({
       ...book,

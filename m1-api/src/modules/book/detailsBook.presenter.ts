@@ -1,3 +1,4 @@
+import { AdviceModel } from '../advices/advice.model';
 import { AuthorModel } from '../author/author.model';
 import { BookId } from '../database/entities/book.entity';
 import { BookModel } from './book.model';
@@ -10,6 +11,7 @@ export class DetailsBookPresenter {
   author: AuthorModel;
   price: number | null;
   photoPath: string | null;
+  advices: AdviceModel[];
 
   private constructor(book: DetailsBookPresenter) {
     Object.assign(this, book);
@@ -18,6 +20,7 @@ export class DetailsBookPresenter {
   public static from(
     book: BookModel,
     author: AuthorModel,
+    advices: AdviceModel[],
   ): DetailsBookPresenter {
     return new DetailsBookPresenter({
       id: book.id,
@@ -26,6 +29,7 @@ export class DetailsBookPresenter {
       price: book.price,
       photoPath: book.picture,
       author: author,
+      advices: advices,
     });
   }
 }
