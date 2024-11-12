@@ -7,6 +7,7 @@ import {
   Patch,
   Post,
 } from '@nestjs/common';
+import { AdviceService } from '../advices/advice.service';
 import { BookId } from '../database/entities/book.entity';
 import { CreateBookDto, UpdateBookDto } from './book.dto';
 import { BookPresenter } from './book.presenter';
@@ -15,7 +16,10 @@ import { DetailsBookPresenter } from './detailsBook.presenter';
 
 @Controller('books')
 export class BookController {
-  constructor(private readonly bookService: BookService) {}
+  constructor(
+    private readonly bookService: BookService,
+    private readonly adviceService: AdviceService,
+  ) {}
 
   @Get()
   public async getBooks(): Promise<BookPresenter[]> {
@@ -24,9 +28,20 @@ export class BookController {
     return await Promise.all(
       books.map(async (book) => {
         const author = book.author;
-        const averageRating = 0; //valeur temporaire
-
-        return BookPresenter.from(book, author, averageRating);
+        const advices = await this.adviceService.listAdvicesForBook(book.id);
+        // Si aucun avis, retourner 0 (ou une valeur par défaut)
+        if (advices.length === 0) {
+          const averageRating = 0;
+          return BookPresenter.from(book, author, averageRating);
+        } else {
+          // Calculer la moyenne des stars
+          const totalStars = advices.reduce(
+            (sum, advice) => sum + advice.stars,
+            0,
+          );
+          const averageRating = totalStars / advices.length;
+          return BookPresenter.from(book, author, averageRating);
+        }
       }),
     );
   }
@@ -36,18 +51,18 @@ export class BookController {
     @Param('id') id: BookId,
   ): Promise<DetailsBookPresenter> {
     const book = await this.bookService.getBook(id);
-    console.log(book);
+    const advices = await this.adviceService.listAdvicesForBook(id);
 
-    return DetailsBookPresenter.from(book, book.author);
+    return DetailsBookPresenter.from(book, book.author, advices);
   }
 
   @Post()
   public async createBook(
     @Body() input: CreateBookDto,
-  ): Promise<DetailsBookPresenter> {
+  ): Promise<BookPresenter> {
     const book = await this.bookService.createBook(input);
 
-    return DetailsBookPresenter.from(book, book.author);
+    return BookPresenter.from(book, book.author, 0);
   }
 
   @Get('/searchBook/:search')
@@ -59,9 +74,20 @@ export class BookController {
     return await Promise.all(
       books.map(async (book) => {
         const author = book.author;
-        const averageRating = 0; //valeur temporaire
-
-        return BookPresenter.from(book, author, averageRating);
+        const advices = await this.adviceService.listAdvicesForBook(book.id);
+        // Si aucun avis, retourner 0 (ou une valeur par défaut)
+        if (advices.length === 0) {
+          const averageRating = 0;
+          return BookPresenter.from(book, author, averageRating);
+        } else {
+          // Calculer la moyenne des stars
+          const totalStars = advices.reduce(
+            (sum, advice) => sum + advice.stars,
+            0,
+          );
+          const averageRating = totalStars / advices.length;
+          return BookPresenter.from(book, author, averageRating);
+        }
       }),
     );
   }
@@ -72,9 +98,18 @@ export class BookController {
     @Body() input: UpdateBookDto,
   ): Promise<BookPresenter> {
     const book = await this.bookService.updateBook(id, input);
-    const averageRating = 0; //valeur temporaire
-
-    return BookPresenter.from(book, book.author, averageRating);
+    const author = book.author;
+    const advices = await this.adviceService.listAdvicesForBook(book.id);
+    // Si aucun avis, retourner 0 (ou une valeur par défaut)
+    if (advices.length === 0) {
+      const averageRating = 0;
+      return BookPresenter.from(book, author, averageRating);
+    } else {
+      // Calculer la moyenne des stars
+      const totalStars = advices.reduce((sum, advice) => sum + advice.stars, 0);
+      const averageRating = totalStars / advices.length;
+      return BookPresenter.from(book, author, averageRating);
+    }
   }
 
   @Delete(':id')
