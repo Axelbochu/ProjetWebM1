@@ -9,6 +9,6 @@ export type BookModel = {
         biography?: string;
         photoPath?: string;
       };
-    yearPublished: number
-    rating: number
+    publishedYear: number
+    averageRating: number
 }

@@ -564,20 +564,14 @@ video {
 .mt-2 {
   margin-top: 0.5rem;
 }
+.mt-4 {
+  margin-top: 1rem;
+}
 .mt-6 {
   margin-top: 1.5rem;
 }
 .mt-8 {
   margin-top: 2rem;
-}
-.mt-1 {
-  margin-top: 0.25rem;
-}
-.mt-4 {
-  margin-top: 1rem;
-}
-.mt-3 {
-  margin-top: 0.75rem;
 }
 .line-clamp-4 {
   overflow: hidden;
@@ -665,18 +659,11 @@ video {
   text-overflow: ellipsis;
   white-space: nowrap;
 }
-.rounded {
-  border-radius: 0.25rem;
-}
 .rounded-full {
   border-radius: 9999px;
 }
 .rounded-xl {
   border-radius: 0.75rem;
-}
-.bg-blue-500 {
-  --tw-bg-opacity: 1;
-  background-color: rgb(59 130 246 / var(--tw-bg-opacity));
 }
 .bg-custom-dark {
   --tw-bg-opacity: 1;

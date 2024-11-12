@@ -17,7 +17,7 @@ function Books() {
       <div>
         <SearchBar onSearch={setSearchQuery} />
       </div>
-      <div className="min-h-screen bg-gray-100 ml-10 mr-10 flex flex-wrap justify-center gap-6">
+      <div className="  ml-10 mr-10 flex flex-wrap justify-center gap-6">
       {books.length === 0 ? (
           <p className="text-center text-xl text-gray-600">Aucun livre trouvé.</p>
         ) : (
@@ -29,8 +29,8 @@ function Books() {
             coverImage={book.coverImage || "/images/livres/harry2.jpg"} 
             title={book.title}
             line1={book.author.firstName + " " + book.author.lastName}
-            line2={book.yearPublished}
-            rating={book.rating || 0} 
+            line2={book.publishedYear || 0 }
+            rating={book.averageRating || 0} 
             isBook={true}
             onClick={() => console.log(`Détails de ${book.title}`)}
           />
