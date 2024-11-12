@@ -1,5 +1,4 @@
-// useBookProviders.ts
-import { useState, useEffect } from "react";
+import { useState, useEffect, useMemo } from "react";
 import axios from "axios";
 import { BookModel } from "../models/BookModel";
 
@@ -26,6 +25,7 @@ export const useListBookProviders = () => {
     loadBooks(searchQuery);
   }, [searchQuery]);
 
+  
   useEffect(() => {
     if (sortType === 'alphabetical') {
       setBooks((prevBooks) => [...prevBooks].sort((a, b) => a.title.localeCompare(b.title)));
@@ -36,9 +36,18 @@ export const useListBookProviders = () => {
     }
   }, [sortType, searchQuery]);
 
+
+  const highestRatedBook = useMemo(() => {
+    return books.reduce((topBook, currentBook) => 
+      (topBook && topBook.averageRating >= currentBook.averageRating ? topBook : currentBook), 
+      null as BookModel | null
+    );
+  }, [books]);
+
   return {
     books,
     setSearchQuery,
     setSortType,
+    highestRatedBook,  
   };
 };
