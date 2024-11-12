@@ -1,4 +1,4 @@
-// File: C:\Users\paulb\ProjetWebM1-1\m1-site\src\app\books\page.tsx
+// File: C:\Users\Administrateur\OneDrive - JUNIA Grande école d'ingénieurs\Bureau\Cir 4 2024-2025\Technologies Web\ProjetWebM1\m1-site\src\app\books\page.tsx
 import * as entry from '../../../../src/app/books/page.js'
 import type { ResolvingMetadata, ResolvingViewport } from 'next/dist/lib/metadata/types/metadata-interface.js'
 
