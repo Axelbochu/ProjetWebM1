@@ -21,8 +21,8 @@ export class BookService {
   }
 
   //todo : à implémenter ---->
-  public async searchBook(search: string): Promise<string> {
-    return 'Search book ' + search;
+  public async searchBook(search: string): Promise<BookModel[]> {
+    return this.bookRepository.searchBook(search);
   }
 
   public async createBookAdvice(

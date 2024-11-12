@@ -31,7 +31,6 @@ export class BookController {
     );
   }
 
-  //TODO : nouveau presenter
   @Get(':id')
   public async getBookById(
     @Param('id') id: BookId,
@@ -51,9 +50,18 @@ export class BookController {
     return DetailsBookPresenter.from(book, book.author);
   }
 
-  @Get(':search')
-  public async searchBook(@Param('search') search: string): Promise<string> {
-    return this.bookService.searchBook(search);
+  @Get('/searchBook/:search')
+  public async searchBook(@Param('search') search: string): Promise<BookPresenter[]> {
+    const books = await this.bookService.searchBook(search);
+
+    return await Promise.all(
+      books.map(async (book) => {
+        const author = book.author;
+        const averageRating = 0; //valeur temporaire
+
+        return BookPresenter.from(book, author, averageRating);
+      }),
+    );
   }
 
   @Post(':id/advices')
