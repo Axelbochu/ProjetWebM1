@@ -1,8 +1,15 @@
 export type AuthorModel = {
     id: string
+    firstName: string;
+    lastName: string;
+    numberBook?: number
+    rating?: number
     authorImage: string
-    authorName: string
-    numberBook: number
-    rating: number
 
 }
+export type CreateAuthorModel = {
+    firstName: string;
+    lastName: string;
+    biography?: string;
+    photoPath?: string;
+  };
