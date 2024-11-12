@@ -8,7 +8,7 @@ import {
   Post,
 } from '@nestjs/common';
 import { BookId } from '../database/entities/book.entity';
-import { CreateBookDto, NewAdviceDto, UpdateBookDto } from './book.dto';
+import { CreateBookDto, UpdateBookDto } from './book.dto';
 import { BookPresenter } from './book.presenter';
 import { BookService } from './book.service';
 import { DetailsBookPresenter } from './detailsBook.presenter';
@@ -62,14 +62,6 @@ export class BookController {
         return BookPresenter.from(book, author, averageRating);
       }),
     );
-  }
-
-  @Post(':id/advices')
-  public async createBookAdvice(
-    @Param('id') id: string,
-    @Body() advice: NewAdviceDto,
-  ): Promise<string> {
-    return this.bookService.createBookAdvice(id, advice);
   }
 
   @Patch(':id')
