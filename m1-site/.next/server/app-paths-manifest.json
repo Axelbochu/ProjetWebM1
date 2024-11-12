@@ -1,6 +1,5 @@
 {
-  "/authors_details/page": "app/authors_details/page.js",
   "/authors/page": "app/authors/page.js",
-  "/page": "app/page.js",
-  "/books/page": "app/books/page.js"
+  "/books_details/[id]/page": "app/books_details/[id]/page.js",
+  "/authors_details/page": "app/authors_details/page.js"
 }

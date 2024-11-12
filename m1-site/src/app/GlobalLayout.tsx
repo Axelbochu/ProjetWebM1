@@ -38,6 +38,9 @@ export const GlobalLayout: FC<Props> = ({ children }) => {
             <Button onClick={() => router.push('/authors_details')} className={getButtonStyle('/authors_details')} aria-label="Authors">
               <Image src="/images/icon/icons8-avatar-241.png" alt="Avatar" width={24} height={24} />
             </Button>
+            <Button onClick={() => router.push('/books_details/id')} className={getButtonStyle('/books_details/id')} aria-label="Authors">
+              <Image src="/images/icon/icons8-livre-24 (2).png" alt="Avatar" width={24} height={24} />
+            </Button>
           </div>
         </div>
 

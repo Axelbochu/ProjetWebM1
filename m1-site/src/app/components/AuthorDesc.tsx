@@ -24,7 +24,7 @@ export const AuthorDesc: React.FC<Author_data> = ({ coverImage, author_name, bio
 
                 {/* Biographie avec taille de police plus grande */}
                 <div className="p-2 max-h-32 overflow-auto">
-                    <p className="text-lg">{biographie}</p> {/* Agrandissement de la police ici */}
+                    <p className="text-lg font-elegant">{biographie}</p> {/* Agrandissement de la police ici */}
                 </div>
             </div>
 

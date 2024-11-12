@@ -134,7 +134,7 @@ const books = [
         </div>
   
         <ButtonAdmin onClick={handleAdminButtonClick} className={getButtonStyle()} aria-label="Authors">
-          <Image src="/images/icon/icons8-avatar-241.png" alt="Avatar" width={24} height={24} />
+          <Image src="/images/icon/icons8-paramètres-24.png" alt="Avatar" width={24} height={24} />
         </ButtonAdmin>
       </GlobalLayout>
     );
