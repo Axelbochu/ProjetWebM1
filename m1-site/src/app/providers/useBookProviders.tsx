@@ -1,19 +1,19 @@
+// useBookProviders.ts
 import { useState, useEffect } from "react";
 import axios from "axios";
-import { BookModel } from "../models/BookModel"; // Assuming BookModel is imported from the right path
+import { BookModel } from "../models/BookModel";
 
 export const useListBookProviders = () => {
   const [books, setBooks] = useState<BookModel[]>([]);
   const [searchQuery, setSearchQuery] = useState<string>("");
+  const [sortType, setSortType] = useState<'alphabetical' | 'rating' | 'default'>('default');
 
-  // Function to load books from the API
   const loadBooks = (query = "") => {
     const url = query
       ? `http://localhost:3001/books/searchBook/${encodeURIComponent(query)}`
       : "http://localhost:3001/books";
 
-    axios
-      .get<BookModel[]>(url)
+    axios.get<BookModel[]>(url)
       .then((response) => {
         setBooks(response.data);
       })
@@ -22,13 +22,23 @@ export const useListBookProviders = () => {
       });
   };
 
-  // Effect to load all books initially or when searchQuery changes
   useEffect(() => {
     loadBooks(searchQuery);
   }, [searchQuery]);
 
+  useEffect(() => {
+    if (sortType === 'alphabetical') {
+      setBooks((prevBooks) => [...prevBooks].sort((a, b) => a.title.localeCompare(b.title)));
+    } else if (sortType === 'rating') {
+      setBooks((prevBooks) => [...prevBooks].sort((a, b) => b.averageRating - a.averageRating));
+    } else {
+      loadBooks(searchQuery);
+    }
+  }, [sortType, searchQuery]);
+
   return {
     books,
-    setSearchQuery, // Call this to update the search query
+    setSearchQuery,
+    setSortType,
   };
 };

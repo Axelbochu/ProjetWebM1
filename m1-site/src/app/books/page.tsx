@@ -5,9 +5,9 @@ import { Title } from '../components/Title';
 import { Card } from '../components/CardSearch';
 import { SearchBar } from '../components/searchBar';
 import { useListBookProviders } from '../providers/useBookProviders'; // Import the custom hook
-
+import { SortDropdown } from '../components/SortDropdown';
 function Books() {
-  const { books, setSearchQuery } = useListBookProviders(); 
+  const { books, setSearchQuery, setSortType } = useListBookProviders(); 
 
 
 
@@ -16,6 +16,7 @@ function Books() {
       <Title>Page Livres</Title>
       <div>
         <SearchBar onSearch={setSearchQuery} />
+        <SortDropdown onSortChange={setSortType} />
       </div>
       <div className="  ml-10 mr-10 flex flex-wrap justify-center gap-6">
       {books.length === 0 ? (
