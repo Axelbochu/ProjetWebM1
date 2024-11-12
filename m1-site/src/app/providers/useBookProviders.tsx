@@ -4,10 +4,16 @@ import { BookModel } from "../models/BookModel"; // Assuming BookModel is import
 
 export const useListBookProviders = () => {
   const [books, setBooks] = useState<BookModel[]>([]);
+  const [searchQuery, setSearchQuery] = useState<string>("");
 
   // Function to load books from the API
-  const loadBooks = () => {
-    axios.get<BookModel[]>('http://localhost:3001/books')
+  const loadBooks = (query = "") => {
+    const url = query
+      ? `http://localhost:3001/books/searchBook/${encodeURIComponent(query)}`
+      : "http://localhost:3001/books";
+
+    axios
+      .get<BookModel[]>(url)
       .then((response) => {
         setBooks(response.data);
       })
@@ -16,13 +22,13 @@ export const useListBookProviders = () => {
       });
   };
 
-  // Automatically load books on mount
+  // Effect to load all books initially or when searchQuery changes
   useEffect(() => {
-    loadBooks();
-  }, []);
+    loadBooks(searchQuery);
+  }, [searchQuery]);
 
   return {
     books,
-    loadBooks, // You can use this to manually refresh the list if needed
+    setSearchQuery, // Call this to update the search query
   };
 };

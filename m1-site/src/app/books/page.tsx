@@ -7,21 +7,23 @@ import { SearchBar } from '../components/searchBar';
 import { useListBookProviders } from '../providers/useBookProviders'; // Import the custom hook
 
 function Books() {
-  const { books } = useListBookProviders(); // Get books from the custom hook
+  const { books, setSearchQuery } = useListBookProviders(); 
 
-  const handleSearch = (query: string) => {
-    console.log("Recherche en cours :", query);
-    // Implement your search logic here
-  };
+
 
   return (
     <GlobalLayout>
       <Title>Page Livres</Title>
       <div>
-        <SearchBar onSearch={handleSearch} />
+        <SearchBar onSearch={setSearchQuery} />
       </div>
       <div className="min-h-screen bg-gray-100 ml-10 mr-10 flex flex-wrap justify-center gap-6">
-        {books.map((book) => (
+      {books.length === 0 ? (
+          <p className="text-center text-xl text-gray-600">Aucun livre trouvé.</p>
+        ) : (
+          
+        books.map((book) => (
+        
           <Card
             key={book.id}
             coverImage={book.coverImage || "/images/livres/harry2.jpg"} 
@@ -32,7 +34,8 @@ function Books() {
             isBook={true}
             onClick={() => console.log(`Détails de ${book.title}`)}
           />
-        ))}
+        ))
+      )}
       </div>
     </GlobalLayout>
   );
