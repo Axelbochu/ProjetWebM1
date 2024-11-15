@@ -7,6 +7,7 @@ import { AuthorDesc } from "../components/AuthorDesc";
 import { ButtonAdmin } from "../components/BoutonAdmin";
 import { BookCard } from "../components/BookCard";
 import { AddBookCard } from "../components/AddBookCard";
+import { PopUpDeleteBook } from "../components/PopUpDeleteBook";
 import Image from "next/image";
 
 const books = [
@@ -83,6 +84,7 @@ const books = [
     
   ];
 
+
   function AuthorsDetails() {
     const [isAdmin, setIsAdmin] = useState(false); // Déclare une variable d'état pour le bouton
     const router = useRouter(); // Initialisation du router
@@ -92,6 +94,15 @@ const books = [
       setIsAdmin(!isAdmin); // Inverse l'état de isAdmin (true/false)
       router.push('/authors_details'); // Naviguer vers la page après le clic
     };
+
+    const handleDelBook = () => {
+      if (!isAdmin) {
+        router.push('/books')
+      }
+      else {
+        router.push('/authors')
+      }
+    }
   
     // Fonction pour appliquer un style en fonction de l'état de isAdmin
     const getButtonStyle = () => {
@@ -119,7 +130,9 @@ const books = [
               date={book.date}
               hauteur={"h-48"}
               largeur={"w-32"}
-              onClick={() => router.push('/books')}
+              isAdmin={isAdmin}
+              onClick={handleDelBook}
+             
             />
           ))}
   
