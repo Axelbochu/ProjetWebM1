@@ -6,9 +6,10 @@ import { Card } from '../components/CardSearch';
 import { SearchBar } from '../components/searchBar';
 import { useListBookProviders } from '../providers/useBookProviders'; // Import the custom hook
 import { SortDropdown } from '../components/SortDropdown';
+import { useRouter } from "next/navigation";
 function Books() {
   const { books, setSearchQuery, setSortType } = useListBookProviders(); 
-
+  const router = useRouter();
 
 
   return (
@@ -33,7 +34,7 @@ function Books() {
             line2={book.publishedYear || 0 }
             rating={book.averageRating || 0} 
             isBook={true}
-            onClick={() => console.log(`Détails de ${book.title}`)}
+            onClick={() => router.push('/books_details/'+book.id)}
           />
         ))
       )}

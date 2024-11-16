@@ -3,17 +3,15 @@ import { Card } from '../components/CardSearch';
 import { Title} from '.././components/Title';
 import { GlobalLayout } from "../GlobalLayout";
 import {SearchBar} from '../components/searchBar';
-import {useListAuthorProviders} from '../providers/useAuthorsProviders'
+import {useListAuthorProviders} from '../providers/useAuthorsProviders';
+import { useRouter } from "next/navigation";
 
 import { AuthorModel } from '../models/AuthorsModel';
 
-function authors(){
+function Authors(){
  
-
+  const router = useRouter();
   const { authors , setSearchQuery } = useListAuthorProviders();
-
-
-
 
     return(
         
@@ -21,7 +19,7 @@ function authors(){
           <Title>Page auteurs</Title>
           
           <SearchBar onSearch={setSearchQuery} />
-          <div className="min-h-screen bg-gray-100 ml-10 mr-10 flex flex-wrap  justify-center gap-6 ">
+          <div className="min-h-screen ml-10 mr-10 flex flex-wrap  justify-center gap-6 ">
           {authors.length === 0 ? (
           <p className="text-center text-xl text-gray-600">Aucun auteur trouvé.</p>
         ) : (
@@ -35,7 +33,7 @@ function authors(){
             line2={author.bookCount || 0}
             rating={author.averageRating || 0}
             isBook={false}
-            onClick={() => console.log(`Détails de ${author.lastName}`)}
+            onClick={() => router.push('/authors_details/'+author.id)}
           />
           )
         ))}
@@ -46,4 +44,4 @@ function authors(){
 
     ) 
 }
- export default authors;
+ export default Authors;
