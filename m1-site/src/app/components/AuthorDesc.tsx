@@ -1,14 +1,7 @@
 import React from 'react';
 import '../App.css'; // Assurez-vous que le fichier CSS est bien importé
 import Image from 'next/image';
-
-interface Author_data {
-  coverImage: string;
-  author_name: string;
-  biographie: string;
-  hauteur: string;
-  largeur: string;
-}
+import { Author_data } from '../models/AuthorsModel';
 
 export const AuthorDesc: React.FC<Author_data> = ({ coverImage, author_name, biographie, hauteur, largeur }) => {
     return (
@@ -28,16 +21,18 @@ export const AuthorDesc: React.FC<Author_data> = ({ coverImage, author_name, bio
                 </div>
             </div>
 
-            {/* Section de droite avec l'image de l'auteur */}
-            <div className="w-1/3 relative">
-                <Image
-                    src={coverImage}
-                    alt={`Photo de ${author_name}`}
-                    layout="fill"
-                    objectFit="cover"
-                    className="shadow-lg rounded-xl"
-                />
-            </div>
+      {/* Section de droite avec l'image de couverture */}
+      <div className="w-1/3 relative">
+        <div className="relative w-full h-[500px] max-h-screen"> {/* Conteneur dynamique */}
+          <Image
+            src={coverImage}
+            alt={`Photo de ${author_name}`}
+            layout="fill"
+            objectFit="contain"
+            className='rounded-xl'
+          />
         </div>
+      </div>
+    </div>
     );
 };

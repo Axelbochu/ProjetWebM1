@@ -10,3 +10,11 @@ export type AuthorModel = {
     authorImage: string;
     books: BookModel[];
 }
+
+export interface Author_data {
+    coverImage: string;
+    author_name: string;
+    biographie: string;
+    hauteur: string;
+    largeur: string;
+  }

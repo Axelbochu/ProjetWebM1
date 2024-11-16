@@ -85,7 +85,6 @@ export const BookDesc: React.FC<Book_data> = ({ coverImage, book_name, price, ra
             alt={`Couverture de ${book_name}`}
             layout="fill"
             objectFit="contain"
-            className="shadow-lg rounded-xl"
           />
         </div>
       </div>

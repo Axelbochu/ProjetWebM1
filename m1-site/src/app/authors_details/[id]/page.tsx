@@ -37,7 +37,7 @@ function AuthorsDetails() {
   return (
     <GlobalLayout>
       <AuthorDesc
-        coverImage={author?.authorImage ? author.authorImage : "/images/livres/harry2.jpg"} // Image de l'auteur
+        coverImage={author?.authorImage ? author.authorImage : "/images/auteur/jk.jpg"} // Image de l'auteur
         author_name={author ? `${author.firstName} ${author.lastName}` : "Nom de l'auteur"}
         biographie={author ? `${author.biography}` : "Biographie"}
         hauteur={"h-[70vh]"}
