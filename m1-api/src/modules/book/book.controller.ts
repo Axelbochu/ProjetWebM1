@@ -6,7 +6,12 @@ import {
   Param,
   Patch,
   Post,
+  UploadedFile,
+  UseInterceptors,
 } from '@nestjs/common';
+import { FileInterceptor } from '@nestjs/platform-express';
+import { diskStorage } from 'multer';
+import { extname } from 'path';
 import { AdviceService } from '../advices/advice.service';
 import { BookId } from '../database/entities/book.entity';
 import { CreateBookDto, UpdateBookDto } from './book.dto';
@@ -55,12 +60,38 @@ export class BookController {
 
     return DetailsBookPresenter.from(book, book.author, advices);
   }
-
   @Post()
+  @UseInterceptors(
+    FileInterceptor('file', {
+      storage: diskStorage({
+        destination: './uploads/books', // Chemin où enregistrer les fichiers
+        filename: (req, file, cb) => {
+          const uniqueSuffix =
+            Date.now() + '-' + Math.round(Math.random() * 1e9);
+          cb(
+            null,
+            `${file.fieldname}-${uniqueSuffix}${extname(file.originalname)}`,
+          );
+        },
+      }),
+      fileFilter: (req, file, cb) => {
+        if (!file.mimetype.match(/\/(jpg|jpeg|png)$/)) {
+          return cb(new Error('Only image files are allowed!'), false);
+        }
+        cb(null, true);
+      },
+    }),
+  )
   public async createBook(
     @Body() input: CreateBookDto,
+    @UploadedFile() file: Express.Multer.File,
   ): Promise<BookPresenter> {
-    const book = await this.bookService.createBook(input);
+    const picture = file ? file.path : null; // Récupérer le chemin du fichier s'il est fourni
+
+    const book = await this.bookService.createBook({
+      ...input,
+      picture, // Inclure le chemin de l'image dans les données du livre
+    });
 
     return BookPresenter.from(book, book.author, 0);
   }

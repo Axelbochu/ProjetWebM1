@@ -26,8 +26,8 @@ export class BookPresenter {
       publishedYear: book.yearPublished,
       author: author,
       averageRating: averageRating,
-      photoPath: book.picture,
-      price: book.price,
+      photoPath: book.picture, // Image du livre (par exemple, une URL ou un chemin relatif)
+      price: book.price, // Prix du livre, s'il existe
     });
   }
 }
