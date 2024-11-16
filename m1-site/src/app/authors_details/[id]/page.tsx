@@ -15,7 +15,6 @@ function AuthorsDetails() {
   const router = useRouter(); // Initialisation du router
   const { id } = useParams();
   const { author, loadAuthorById } = useListAuthorProviders(); // Données de l'auteur
-  const [authorId, setAuthorId] = useState("");
 
   useEffect(() => {
     if (typeof id === "string" && id !== author?.id) {

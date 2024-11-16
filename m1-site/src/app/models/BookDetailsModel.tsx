@@ -1,8 +1,9 @@
-export type BookModel = {
+export type BookDetailsModel = {
     id: string
-    coverImage ?: string
     title: string
+    publishedYear: number
     price : number
+    photoPath ?: string
     author: {
         id: string;
         firstName: string;
@@ -10,6 +11,10 @@ export type BookModel = {
         biography?: string;
         photoPath?: string;
       };
-    publishedYear: number
-    averageRating: number
+    advices: {
+        id: string;
+        creationDate: string;
+        comment: string;
+        stars: number;
+      };
 }

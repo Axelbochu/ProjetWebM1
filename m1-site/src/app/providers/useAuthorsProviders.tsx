@@ -5,7 +5,7 @@ import { AuthorModel } from "../models/AuthorsModel";
 export const useListAuthorProviders = () => {
   const [authors, setAuthors] = useState<AuthorModel[]>([]);
   const [searchQuery, setSearchQuery] = useState<string>("");
-  const [author, setAuthor] = useState<AuthorModel | null>(null); // État pour un seul auteur
+  const [author, setAuthor] = useState<AuthorModel | null>(null);
 
   // Fonction pour charger plusieurs auteurs
   const loadAuthors = (query = "") => {
@@ -23,7 +23,7 @@ export const useListAuthorProviders = () => {
       });
   };
 
-  // **Nouvelle fonction pour charger un auteur par son ID**
+  //fonction pour charger un auteur par son ID
   const loadAuthorById = (id: string) => {
     const url = `http://localhost:3001/Authors/${encodeURIComponent(id)}`;
 
