@@ -9,6 +9,7 @@ import { BookCard } from "../components/BookCard";
 import { AddBookCard } from "../components/AddBookCard";
 import Image from "next/image";
 import { ModalDelete } from "../components/ModalDelete";
+import { ModalAddBook } from "../components/ModalAddBook";
 
 const books = [
     {
@@ -98,10 +99,10 @@ const books = [
   function AuthorsDetails() {
     const [isAdmin, setIsAdmin] = useState(false); // Déclare une variable d'état pour le bouton
     const router = useRouter(); // Initialisation du router
-    // const [showModal, setShowModal] = useState(false); // Déclare une variable d'état pour le pop up
     const [booksList, setBooks] = useState(books);
-    const [modalIsOpen, setModalIsOpen] = useState(false);
+    const [modalDeleteIsOpen, setModalDeleteIsOpen] = useState(false);
     const [selectedBookName, setSelectedBookName] = useState('');
+    const [modalAddBookIsOpen, setModalAddBookIsOpen] = useState(false);
   
     // Fonction pour gérer le clic sur le bouton
     const handleAdminButtonClick = () => {
@@ -115,7 +116,7 @@ const books = [
       }
       else {
         setSelectedBookName(bookName);
-        setModalIsOpen(true);
+        setModalDeleteIsOpen(true);
 
       }
     }
@@ -161,26 +162,26 @@ const books = [
           ))}
   
           {/* Le composant AddBookCard n'apparaît que si isAdmin est true */}
-          {isAdmin && (
+          {/* {isAdmin && (
             <AddBookCard
               hauteur={"h-48"}
               largeur={"w-32"}
               onClick={() => router.push('/authors_details')}
             />
-          )}
+          )} */}
 
           {isAdmin && (
             <AddBookCard
               hauteur={"h-48"}
               largeur={"w-32"}
-              
-              onClick={() => deleteBook(4)}
+              onClick={() => setModalAddBookIsOpen(true)}
             />
           )}
         </div>
            
 
-    {modalIsOpen ? <ModalDelete setModalIsOpen={setModalIsOpen} bookName={selectedBookName}/> : <></>}
+    {modalDeleteIsOpen ? <ModalDelete setModalDeleteIsOpen={setModalDeleteIsOpen} bookName={selectedBookName}/> : <></>}
+    {modalAddBookIsOpen ? <ModalAddBook setModalAddBookIsOpen={setModalAddBookIsOpen} /> : <></>}
 
   
         <ButtonAdmin onClick={handleAdminButtonClick} className={getButtonStyle()} aria-label="Authors">

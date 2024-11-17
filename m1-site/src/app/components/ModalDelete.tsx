@@ -4,17 +4,16 @@ import { useRouter } from "next/navigation"; // Initialisation du router
 
 
 interface ModalProps {
-    setModalIsOpen: React.Dispatch<React.SetStateAction<boolean>>;
+    setModalDeleteIsOpen: React.Dispatch<React.SetStateAction<boolean>>;
     bookName: string;
     onClick?: () => void;
   }
 
-export const ModalDelete: React.FC<ModalProps> = ({ setModalIsOpen, bookName, onClick }) => {
-// const Modal = ({ boolean: setModalIsOpen }) => {
+export const ModalDelete: React.FC<ModalProps> = ({ setModalDeleteIsOpen, bookName, onClick }) => {
   const router = useRouter(); // Initialisation du router
   return (
     <>
-      <div className={styles.darkBG} onClick={() => setModalIsOpen(false)} />
+      <div className={styles.darkBG} onClick={() => setModalDeleteIsOpen(false)} />
       <div className={styles.centered}>
         <div className={styles.modal}>
           <div className={styles.modalHeader}>
@@ -25,12 +24,12 @@ export const ModalDelete: React.FC<ModalProps> = ({ setModalIsOpen, bookName, on
           </div>
           <div className={styles.modalActions}>
             <div className={styles.actionsContainer}>
-              <button className={styles.deleteBtn} onClick={() => router.push('/books')}>
+              <button className={`${styles.deleteBtn} bg-red-600`} onClick={() => router.push('/books')}>
                 Supprimer
               </button>
               <button
                 className={styles.cancelBtn}
-                onClick={() => setModalIsOpen(false)}
+                onClick={() => setModalDeleteIsOpen(false)}
               >
                 Annuler
               </button>
@@ -41,6 +40,3 @@ export const ModalDelete: React.FC<ModalProps> = ({ setModalIsOpen, bookName, on
     </>
   );
 };
-
-// export default Modal;
-
