@@ -1,6 +1,6 @@
-import React from 'react';
-import { useRouter } from 'next/navigation'; // Importation du hook useRouter
 import Image from 'next/image';
+import { useRouter } from 'next/navigation'; // Importation du hook useRouter
+import React from 'react';
 
 interface Book_data {
   coverImage: string;
@@ -53,27 +53,20 @@ export const BookDesc: React.FC<Book_data> = ({ coverImage, book_name, price, ra
           >
             {author_name}
           </p>
-          <p className="font-elegant mt-6">La République Galactique est en
-              pleine ébullition. La taxation
-              des routes commerciales reliant
-              les systèmes éloignés provoque
-              la discorde.
+          <p className="font-elegant mt-6">
+            📢 Mise à jour de la bibliothèque
+            <br />
+            Actuellement, l'équipe travaille activement sur l'implémentation d'une nouvelle fonctionnalité : les <strong>résumés de livres</strong> ! 🖋️📚
+            <br />
+            Cette fonctionnalité permettra de :
+            <br />
+            - Consulter une présentation concise pour chaque ouvrage disponible.
+            <br />
+            - Faciliter vos choix de lecture en obtenant un aperçu rapide des contenus.
+            <br />
+            - Rendre l'expérience utilisateur encore plus enrichissante et intuitive.
+          </p>
 
-              Pour régler la question, la
-              cupide Fédération du commerce
-              et ses redoutables vaisseaux de
-              guerre imposent un blocus à la
-              petite planète Naboo.
-
-              Face à ce dangereux engrenage,
-              alors que le Congrès de la
-              République s'enlise dans des
-              débats sans fin, le Chancelier
-              Suprême charge en secret deux
-              Chevaliers Jedi, gardiens de la
-              paix et de la justice dans la
-              galaxie, de résoudre le conflit....
-            </p>
         </div>
       </div>
 

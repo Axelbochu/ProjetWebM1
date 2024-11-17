@@ -1,10 +1,10 @@
 'use client';
-import { Card } from '../components/CardSearch';
-import { Title} from '.././components/Title';
-import { GlobalLayout } from "../GlobalLayout";
-import {SearchBar} from '../components/searchBar';
-import {useListAuthorProviders} from '../providers/useAuthorsProviders';
 import { useRouter } from "next/navigation";
+import { Title } from '.././components/Title';
+import { GlobalLayout } from "../GlobalLayout";
+import { Card } from '../components/CardSearch';
+import { SearchBar } from '../components/searchBar';
+import { useListAuthorProviders } from '../providers/useAuthorsProviders';
 
 import { AuthorModel } from '../models/AuthorsModel';
 
@@ -27,7 +27,7 @@ function Authors(){
           authors.map((author : AuthorModel) => (
           <Card
             key={author.id}
-            coverImage={author.authorImage  || '/images/auteur/jk.jpg'}
+            coverImage={author.photoPath  || '/images/auteur/NicePng_user-png_730154.png'}
             title={author.firstName + ' ' + author.lastName}
             line1={"Nombre de livres :"}
             line2={author.bookCount || 0}

@@ -1,8 +1,8 @@
 'use client'
 import { useRouter } from "next/navigation";
 import { GlobalLayout } from './GlobalLayout';
-import { Title } from './components/Title';
 import { BookCard } from './components/BookCard';
+import { Title } from './components/Title';
 import { useListBookProviders } from './providers/useBookProviders';
 const sugestion = [
   {
@@ -61,6 +61,7 @@ function App() {
               date={highestRatedBook.publishedYear}
               hauteur="h-[70vh]"
               largeur="w-full"
+              isAdmin={false}
               onClick={() => router.push('/books')}
             />
           </div>
@@ -79,6 +80,7 @@ function App() {
               date={book.date}
               hauteur="h-48"
               largeur="w-32"
+              isAdmin={false}
               onClick={() => router.push('/books')}
             />
           ))}

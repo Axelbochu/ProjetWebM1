@@ -1,7 +1,7 @@
-import { useState, useEffect, useMemo } from "react";
 import axios from "axios";
-import { BookModel } from "../models/BookModel";
+import { useEffect, useMemo, useState } from "react";
 import { BookDetailsModel } from "../models/BookDetailsModel";
+import { BookModel } from "../models/BookModel";
 
 export const useListBookProviders = () => {
   const [books, setBooks] = useState<BookModel[]>([]);
@@ -22,6 +22,18 @@ export const useListBookProviders = () => {
         console.error("Error fetching books:", error);
       });
   };
+
+  const deleteBook = (id: string) => { 
+    const url = `http://localhost:3001/books/${encodeURIComponent(id)}`;
+
+    axios.delete(url)
+      .then(() => {
+        loadBooks(searchQuery);
+      })
+      .catch((error) => {
+        console.error("Error deleting book:", error);
+      });
+  }
 
   //fonction pour charger un auteur par son ID
   const loadBookById = (id: string) => {
@@ -66,6 +78,7 @@ export const useListBookProviders = () => {
     setSearchQuery,
     setSortType,
     loadBookById,
-    highestRatedBook,  
+    highestRatedBook, 
+    deleteBook, 
   };
 };

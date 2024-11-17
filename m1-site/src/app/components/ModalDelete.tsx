@@ -1,14 +1,14 @@
 import React from "react";
-import { useRouter } from "next/navigation"; // Initialisation du router
+import { useListBookProviders } from "../providers/useBookProviders";
 
 interface ModalProps {
   setModalDeleteIsOpen: React.Dispatch<React.SetStateAction<boolean>>;
-  bookName: string;
+  id: string;
   onClick?: () => void;
 }
 
-export const ModalDelete: React.FC<ModalProps> = ({ setModalDeleteIsOpen, bookName, onClick }) => {
-  const router = useRouter(); // Initialisation du router
+export const ModalDelete: React.FC<ModalProps> = ({ setModalDeleteIsOpen, id, onClick }) => {
+  const { deleteBook } = useListBookProviders(); 
   return (
     <>
       <div className="fixed inset-0 bg-black bg-opacity-20 z-0" onClick={() => setModalDeleteIsOpen(false)} />
@@ -18,12 +18,15 @@ export const ModalDelete: React.FC<ModalProps> = ({ setModalDeleteIsOpen, bookNa
             <h5 className="text-lg font-semibold text-gray-800">Suppression</h5>
           </div>
           <div className="mb-6">
-            Etes-vous sûr de vouloir supprimer le livre <br />{bookName} ?
+            Etes-vous sûr de vouloir supprimer le livre ?
           </div>
           <div className="flex justify-around">
             <button
               className="bg-red-600 text-white font-semibold py-2 px-4 rounded-lg shadow-lg hover:shadow-red-600/50 hover:translate-y-[-5px] transition-all duration-200"
-              onClick={() => router.push('/books')}
+              onClick={() => {
+                deleteBook(id);
+                window.location.reload();
+              }}
             >
               Supprimer
             </button>

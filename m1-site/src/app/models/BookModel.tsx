@@ -1,6 +1,6 @@
 export type BookModel = {
     id: string
-    coverImage ?: string
+    photoPath ?: string
     title: string
     price : number
     author: {

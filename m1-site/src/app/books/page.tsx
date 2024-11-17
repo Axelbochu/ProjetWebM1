@@ -1,12 +1,12 @@
 'use client';
 
+import { useRouter } from "next/navigation";
 import { GlobalLayout } from "../GlobalLayout";
-import { Title } from '../components/Title';
 import { Card } from '../components/CardSearch';
+import { SortDropdown } from '../components/SortDropdown';
+import { Title } from '../components/Title';
 import { SearchBar } from '../components/searchBar';
 import { useListBookProviders } from '../providers/useBookProviders'; // Import the custom hook
-import { SortDropdown } from '../components/SortDropdown';
-import { useRouter } from "next/navigation";
 function Books() {
   const { books, setSearchQuery, setSortType } = useListBookProviders(); 
   const router = useRouter();
@@ -28,7 +28,7 @@ function Books() {
         
           <Card
             key={book.id}
-            coverImage={book.coverImage || "/images/livres/harry2.jpg"} 
+            coverImage={book.photoPath || "/images/livres/fermer-livre-couverture-bleue_1101-92-removebg-preview.png"} 
             title={book.title}
             line1={book.author.firstName + " " + book.author.lastName}
             line2={book.publishedYear || 0 }

@@ -7,7 +7,7 @@ export type AuthorModel = {
     biography: string;
     bookCount: number;
     averageRating: number;
-    authorImage: string;
+    photoPath: string;
     books: BookModel[];
 }
 

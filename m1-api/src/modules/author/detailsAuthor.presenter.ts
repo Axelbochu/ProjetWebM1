@@ -17,12 +17,13 @@ export class DetailsAuthorPresenter {
     author: AuthorModel,
     books: BookModel[],
   ): DetailsAuthorPresenter {
+    const baseURL = process.env.BASE_URL || 'http://localhost:3000/'; // URL de base de l'API
     return new DetailsAuthorPresenter({
       id: author.id,
       firstName: author.firstName,
       lastName: author.lastName,
       biography: author.biography,
-      photoPath: author.photoPath,
+      photoPath: author.photoPath ? `${baseURL}${author.photoPath}` : null,
       books: books,
     });
   }
