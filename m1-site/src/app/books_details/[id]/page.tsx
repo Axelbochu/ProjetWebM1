@@ -18,7 +18,7 @@ function BookDetails() {
   const [isAdmin, setIsAdmin] = useState(false);
   const [averageRating, setAverageRating] = useState(0);
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
-  const [localAdvices, setLocalAdvices] = useState<AdviceModel[]>([]); // Typé comme Advice
+  const [, setLocalAdvices] = useState<AdviceModel[]>([]); // Typé comme Advice
   const { addAdvice } = useAdviceProviders();
   const { id } = useParams();
   const { book, loadBookById } = useListBookProviders();

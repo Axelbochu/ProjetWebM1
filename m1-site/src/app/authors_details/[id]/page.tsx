@@ -8,6 +8,8 @@ import { ButtonAdmin } from "../../components/BoutonAdmin";
 import { BookCard } from "../../components/BookCard";
 import { AddBookCard } from "../../components/AddBookCard";
 import { useListAuthorProviders } from '../../providers/useAuthorsProviders';
+import { ModalDelete } from "../../components/ModalDelete";
+import { ModalAddBook } from "../../components/ModalAddBook";
 import Image from "next/image";
 
 function AuthorsDetails() {
@@ -15,6 +17,9 @@ function AuthorsDetails() {
   const router = useRouter(); // Initialisation du router
   const { id } = useParams();
   const { author, loadAuthorById } = useListAuthorProviders(); // Données de l'auteur
+  const [modalDeleteIsOpen, setModalDeleteIsOpen] = useState(false);
+  const [selectedBookName, setSelectedBookName] = useState('');
+  const [modalAddBookIsOpen, setModalAddBookIsOpen] = useState(false);
 
   useEffect(() => {
     if (typeof id === "string" && id !== author?.id) {
@@ -27,12 +32,20 @@ function AuthorsDetails() {
     setIsAdmin(!isAdmin); // Inverser l'état de isAdmin (true/false)
   };
 
+  const handleDelBook = (id: number, bookName: string) => {
+    if (!isAdmin) {
+      router.push('/books')
+    }
+    else {
+      setSelectedBookName(bookName);
+      setModalDeleteIsOpen(true);
+    }
+  }
+
   // Fonction pour appliquer un style en fonction de l'état de isAdmin
   const getButtonStyle = () => {
     return isAdmin ? "bg-red-400" : "bg-custom-light"; // Appliquer un style différent si isAdmin est true
   };
-
-  console.log(author?.authorImage);
 
   return (
     <GlobalLayout>
@@ -56,7 +69,8 @@ function AuthorsDetails() {
                   date={book.publishedYear} // Année de publication
                   hauteur={"h-48"}
                   largeur={"w-32"}
-                  onClick={() => router.push(`/books_details/${book.id}`)} // Navigation vers les détails du livre
+                  isAdmin={isAdmin}
+                  onClick={() => handleDelBook(Number(book.id), book.title)}
                 />
               ))
           ) : (
@@ -65,13 +79,16 @@ function AuthorsDetails() {
 
         {/* Le composant AddBookCard n'apparaît que si isAdmin est true */}
         {isAdmin && (
-          <AddBookCard
-            hauteur={"h-48"}
-            largeur={"w-32"}
-            onClick={() => router.push(`/authors_details/${author?.id}`)}
-          />
+            <AddBookCard
+              hauteur={"h-48"}
+              largeur={"w-32"}
+              onClick={() => setModalAddBookIsOpen(true)}
+            />
         )}
       </div>
+      
+      {modalDeleteIsOpen ? <ModalDelete setModalDeleteIsOpen={setModalDeleteIsOpen} bookName={selectedBookName}/> : <></>}
+      {modalAddBookIsOpen ? <ModalAddBook setModalAddBookIsOpen={setModalAddBookIsOpen} /> : <></>}
 
       <ButtonAdmin onClick={handleAdminButtonClick} className={getButtonStyle()} aria-label="Authors">
         <Image src="/images/icon/icons8-paramètres-24.png" alt="Avatar" width={24} height={24} />
