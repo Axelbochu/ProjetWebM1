@@ -13,10 +13,9 @@ export const ModalAddBook: React.FC<ModalProps> = ({ setModalAddBookIsOpen, onCl
         const [title, setTitle] = useState('');
         const [author, setAuthor] = useState('');
         const [date, setDate] = useState('');
-        const [email, setEmail] = useState('');
       
         const handleSubmit = () => {
-          alert(`${title} ${author} ${date} ${email}`);
+          alert(`${title} ${author} ${date}`);
         };
       
     return (
@@ -55,11 +54,7 @@ export const ModalAddBook: React.FC<ModalProps> = ({ setModalAddBookIsOpen, onCl
                             value={title}
                             onChange={(e) => setDate(e.target.value)} />
 
-                            <br></br> <label htmlFor="email">Email :&nbsp;</label>
-                        <input type="email"
-                            id="email"
-                            value={email}
-                            onChange={(e) => setEmail(e.target.value)} />
+                            
                         </div>
                             <br></br>
 
