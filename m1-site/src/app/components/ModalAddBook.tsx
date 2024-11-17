@@ -1,4 +1,6 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { useListAuthorProviders } from '../providers/useAuthorsProviders';
+import { AuthorModel } from '../models/AuthorsModel';
 
 interface ModalProps {
   setModalAddBookIsOpen: React.Dispatch<React.SetStateAction<boolean>>;
@@ -11,6 +13,11 @@ export const ModalAddBook: React.FC<ModalProps> = ({ setModalAddBookIsOpen, onCl
   const [date, setDate] = useState('');
   const [price, setPrice] = useState('');
   const [image, setImage] = useState<File | null>(null);
+  const [searchValue, setSearchValue] = useState('');
+  const [searchId, setSearchId] = useState('');
+  const [suggestions, setSuggestions] = useState<AuthorModel[]>([]);
+
+  const { authors, setSearchQuery } = useListAuthorProviders();
 
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files.length > 0) {
@@ -18,34 +25,79 @@ export const ModalAddBook: React.FC<ModalProps> = ({ setModalAddBookIsOpen, onCl
     }
   };
 
+  const handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const value = event.target.value;
+    setSearchValue(value);
+    if (value.trim() === '') {
+      setSuggestions([]); // Réinitialiser les suggestions si l'input est vide
+    } else {
+      setSearchQuery(value);
+    }
+  };
+
+  const handleSuggestionClick = (suggestion: AuthorModel) => {
+    setAuthor(`${suggestion.firstName} ${suggestion.lastName}`);
+    setSearchValue(`${suggestion.firstName} ${suggestion.lastName}`);
+    setSearchId(`${suggestion.id}`);
+    setSuggestions([]);
+  };
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    const formData = new FormData();
-    formData.append('title', title);
-    formData.append('author', author);
-    formData.append('yearPublished', date);
-    formData.append('price', price);
+    let imageBase64 = '';
+
     if (image) {
-      formData.append('file', image); // Appending the image file
+      const reader = new FileReader();
+      reader.readAsDataURL(image);
+      reader.onloadend = async () => {
+        imageBase64 = reader.result as string; // Convertir l'image en base64
+        await sendBookData(imageBase64); // Appelez une autre fonction pour envoyer les données
+      };
+      reader.onerror = () => {
+        console.error('Error reading the image file');
+      };
+      return; // Ne pas continuer avant que la lecture de l'image soit terminée
+    } else {
+      await sendBookData(imageBase64); // Si pas d'image, envoyez les autres données
     }
+  };
+
+  const sendBookData = async (imageBase64: string) => {
+    const data = {
+      title,
+      authorId: searchId,
+      yearPublished: parseInt(date),
+      price: parseInt(price),
+      picture: imageBase64, // Ajoutez l'image base64 ici
+    };
 
     try {
-      const response = await fetch('/api/books', {
+      const response = await fetch('http://localhost:3001/books', {
         method: 'POST',
-        body: formData,
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(data),
       });
 
       if (!response.ok) {
         throw new Error('Failed to upload book');
       }
 
-      const data = await response.json();
-      console.log('Book created successfully', data);
+      const result = await response.json();
+      console.log('Book created successfully', result);
+      window.location.reload(); // Recharger la page après la soumission réussie
     } catch (error) {
       console.error('Error creating book:', error);
     }
   };
+
+  useEffect(() => {
+    if (authors && searchValue.trim() !== '') {
+      setSuggestions(authors.slice(0, 3)); // Limiter à 3 suggestions
+    }
+  }, [authors]);
 
   return (
     <>
@@ -74,15 +126,26 @@ export const ModalAddBook: React.FC<ModalProps> = ({ setModalAddBookIsOpen, onCl
               <input
                 type="text"
                 id="author"
-                value={author}
-                onChange={(e) => setAuthor(e.target.value)}
+                value={searchValue}
+                onChange={handleSearchChange}
                 className="w-full p-2 border border-gray-300 rounded-md"
               />
+              <ul>
+                {suggestions.map((author: AuthorModel) => (
+                  <li
+                    key={author.id}
+                    onClick={() => handleSuggestionClick(author)}
+                    className="cursor-pointer p-2 border-b border-gray-200"
+                  >
+                    {author.firstName} {author.lastName}
+                  </li>
+                ))}
+              </ul>
             </div>
             <div className="mb-4">
               <label htmlFor="date" className="block mb-2">Année de parution :&nbsp;</label>
               <input
-                type="text"
+                type="string"
                 id="date"
                 value={date}
                 onChange={(e) => setDate(e.target.value)}
@@ -92,7 +155,7 @@ export const ModalAddBook: React.FC<ModalProps> = ({ setModalAddBookIsOpen, onCl
             <div className="mb-4">
               <label htmlFor="price" className="block mb-2">Prix :&nbsp;</label>
               <input
-                type="text"
+                type="number"
                 id="price"
                 value={price}
                 onChange={(e) => setPrice(e.target.value)}
