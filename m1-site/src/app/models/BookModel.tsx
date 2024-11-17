@@ -1,8 +1,15 @@
 export type BookModel = {
     id: string
-    coverImage: string
+    coverImage ?: string
     title: string
-    author: string
-    yearPublished: number
-    rating: number
+    price : number
+    author: {
+        id: string;
+        firstName: string;
+        lastName: string;
+        biography?: string;
+        photoPath?: string;
+      };
+    publishedYear: number
+    averageRating: number
 }

@@ -7,9 +7,13 @@
 
 # testing
 /coverage
-
+# Ignorer les fichiers de build de Next.js
+.next/
 # production
 /build
+
+# Ignorer les fichiers .pack.gz
+*.pack.gz
 
 # misc
 .DS_Store

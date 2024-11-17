@@ -1,39 +1,51 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
-import { AuthorModel, CreateAuthorModel } from "../models/AuthorsModel";
+import { AuthorModel } from "../models/AuthorsModel";
 
 export const useListAuthorProviders = () => {
   const [authors, setAuthors] = useState<AuthorModel[]>([]);
+  const [searchQuery, setSearchQuery] = useState<string>("");
+  const [author, setAuthor] = useState<AuthorModel | null>(null);
 
-  // Function to load authors from the API
-  const loadAuthors = () => {
-    axios.get<AuthorModel[]>('http://localhost:3001/Authors')
+  // Fonction pour charger plusieurs auteurs
+  const loadAuthors = (query = "") => {
+    const url = query
+      ? `http://localhost:3001/Authors/getById/${encodeURIComponent(query)}`
+      : "http://localhost:3001/Authors";
+
+    axios
+      .get<AuthorModel[]>(url)
       .then((response) => {
         setAuthors(response.data);
       })
       .catch((error) => {
-        console.error(error);
+        console.error("Error fetching authors:", error);
       });
   };
 
-  // Function to create a new author following the `onCreate` pattern
-  const onCreateAuthor = (input: Omit<CreateAuthorModel, 'id'>) => {
-    axios.post('http://localhost:3001/authors', { author: input })
-      .then(() => {
-        loadAuthors(); // Refresh the author list after creation
+  //fonction pour charger un auteur par son ID
+  const loadAuthorById = (id: string) => {
+    const url = `http://localhost:3001/Authors/${encodeURIComponent(id)}`;
+
+    axios
+      .get<AuthorModel>(url)
+      .then((response) => {
+        setAuthor(response.data); // Met à jour l'état d'un seul auteur
       })
       .catch((error) => {
-        console.error('Error adding author:', error);
+        console.error("Error fetching author by ID:", error);
       });
   };
 
+  // Effet pour charger les auteurs quand la requête change
   useEffect(() => {
-    loadAuthors(); // Automatically load authors on mount
-  }, []);
+    loadAuthors(searchQuery);
+  }, [searchQuery]);
 
   return {
     authors,
-    loadAuthors,
-    onCreateAuthor, // Export the onCreateAuthor function for use elsewhere
+    author, // État pour un seul auteur
+    setSearchQuery, // Fonction pour mettre à jour la requête
+    loadAuthorById, // Fonction pour charger un auteur par ID
   };
 };

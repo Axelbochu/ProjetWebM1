@@ -34,7 +34,7 @@ export const Card: React.FC<BookCardProps> = ({
 
   return (
     <div
-      className="bg-white w-56 h-96 rounded-xl overflow-hidden shadow-xl hover:scale-105 hover:shadow-2xl transform duration-500 cursor-pointer  flex flex-col  "
+      className="bg-white w-56 h-96 rounded-xl overflow-hidden shadow-xl hover:scale-105 hover:shadow-2xl transform duration-500 cursor-pointer  flex flex-col mt-4 mb-4"
       onClick={onClick}
       role="button"
       aria-label={`Voir plus d'infos sur ${title}`}

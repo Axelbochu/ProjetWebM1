@@ -1,15 +1,20 @@
+import { BookModel } from "./BookModel";
+
 export type AuthorModel = {
     id: string
     firstName: string;
     lastName: string;
-    numberBook?: number
-    rating?: number
-    authorImage: string
-
+    biography: string;
+    bookCount: number;
+    averageRating: number;
+    authorImage: string;
+    books: BookModel[];
 }
-export type CreateAuthorModel = {
-    firstName: string;
-    lastName: string;
-    biography?: string;
-    photoPath?: string;
-  };
+
+export interface Author_data {
+    coverImage: string;
+    author_name: string;
+    biographie: string;
+    hauteur: string;
+    largeur: string;
+  }
