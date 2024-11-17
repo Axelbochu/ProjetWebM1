@@ -6,7 +6,12 @@ import {
   Param,
   Patch,
   Post,
+  UploadedFile,
+  UseInterceptors,
 } from '@nestjs/common';
+import { FileInterceptor } from '@nestjs/platform-express';
+import { diskStorage } from 'multer';
+import { extname } from 'path';
 import { AdviceService } from '../advices/advice.service';
 import { CreateAuthorDto, UpdateAuthorDto } from './author.dto';
 import { AuthorPresenter } from './author.presenter';
@@ -57,10 +62,36 @@ export class AuthorController {
   }
 
   @Post()
+  @UseInterceptors(
+    FileInterceptor('file', {
+      storage: diskStorage({
+        destination: './uploads/authors', // Chemin où enregistrer les fichiers
+        filename: (req, file, cb) => {
+          const uniqueSuffix =
+            Date.now() + '-' + Math.round(Math.random() * 1e9);
+          cb(
+            null,
+            `${file.fieldname}-${uniqueSuffix}${extname(file.originalname)}`,
+          );
+        },
+      }),
+      fileFilter: (req, file, cb) => {
+        if (!file.mimetype.match(/\/(jpg|jpeg|png)$/)) {
+          return cb(new Error('Only image files are allowed!'), false);
+        }
+        cb(null, true);
+      },
+    }),
+  )
   public async createAuthor(
     @Body() input: CreateAuthorDto,
+    @UploadedFile() file: Express.Multer.File,
   ): Promise<AuthorPresenter> {
-    const author = await this.authorService.createAuthor(input);
+    const photoPath = file ? file.path : null; // Récupérer le chemin du fichier s'il est fourni
+    const author = await this.authorService.createAuthor({
+      ...input,
+      photoPath, // Inclure le chemin de l'image dans les données de l'auteur
+    });
 
     return AuthorPresenter.from(author, 0, 0);
   }

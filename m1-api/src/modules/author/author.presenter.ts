@@ -17,11 +17,14 @@ export class AuthorPresenter {
     bookCount: number,
     averageRating: number | null,
   ): AuthorPresenter {
+    const baseURL = process.env.BASE_URL || 'http://localhost:3000/'; // URL de base de l'API
+
     return new AuthorPresenter({
       id: author.id,
       firstName: author.firstName,
       lastName: author.lastName,
-      photoPath: author.photoPath,
+      // Concatène l'URL complète si photoPath est défini
+      photoPath: author.photoPath ? `${baseURL}${author.photoPath}` : null,
       bookCount: bookCount,
       averageRating: averageRating,
     });
