@@ -37,7 +37,7 @@ function AuthorsDetails() {
   return (
     <GlobalLayout>
       <AuthorDesc
-        coverImage={author?.authorImage ? author.authorImage : "/images/auteur/jk.jpg"} // Image de l'auteur
+        coverImage={author?.authorImage ? author.authorImage : "/images/auteur/NicePng_user-png_730154.png"} // Image de l'auteur
         author_name={author ? `${author.firstName} ${author.lastName}` : "Nom de l'auteur"}
         biographie={author ? `${author.biography}` : "Biographie"}
         hauteur={"h-[70vh]"}
@@ -49,7 +49,7 @@ function AuthorsDetails() {
         {author?.books && author.books.length > 0 ? (author.books.map((book, index) => (
                 <BookCard
                   key={index}
-                  coverImage={book.coverImage || "/images/livres/harry2.jpg"} // Image du livre, avec valeur par défaut
+                  coverImage={book.coverImage || "/images/livres/fermer-livre-couverture-bleue_1101-92-removebg-preview.png"} // Image du livre, avec valeur par défaut
                   title={book.title}
                   author={`${book.author.firstName} ${book.author.lastName}`} // Nom complet de l'auteur
                   rating={book.averageRating} // Note moyenne du livre
@@ -68,7 +68,7 @@ function AuthorsDetails() {
           <AddBookCard
             hauteur={"h-48"}
             largeur={"w-32"}
-            onClick={() => router.push('/authors_details')}
+            onClick={() => router.push(`/authors_details/${author?.id}`)}
           />
         )}
       </div>

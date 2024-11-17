@@ -77,7 +77,7 @@ function BookDetails() {
         {/* Détails du livre */}
         <div className="w-full">
           <BookDesc
-            coverImage={book?.photoPath ? book.photoPath : "/images/livres/harry2.jpg"}
+            coverImage={book?.photoPath ? book.photoPath : "/images/livres/fermer-livre-couverture-bleue_1101-92-removebg-preview.png"}
             book_name={book ? `${book.title},  ${book.publishedYear}` : `nom du livre`}
             price={book ? Number(book.price) : 0}
             author_name={book ? `${book.author.firstName} ${book.author.lastName}` : `nom de l'auteur`}
@@ -101,7 +101,7 @@ function BookDetails() {
             <h2 className="text-xl font-bold mb-4">Avis des lecteurs</h2>
           {Array.isArray(book?.advices) && book?.advices.length > 0 ? (
             book.advices.map((advice) => (
-              <AdviceCard key={advice.id} advice={advice} /> // Utilisation du nouveau composant
+              <AdviceCard key={advice.id} advice={advice} />
             ))
           ) : (
             <p>Aucun Avis trouvé pour ce Livre.</p>
