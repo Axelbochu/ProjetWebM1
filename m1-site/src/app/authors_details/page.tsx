@@ -7,11 +7,12 @@ import { AuthorDesc } from "../components/AuthorDesc";
 import { ButtonAdmin } from "../components/BoutonAdmin";
 import { BookCard } from "../components/BookCard";
 import { AddBookCard } from "../components/AddBookCard";
-import { PopUpDeleteBook } from "../components/PopUpDeleteBook";
 import Image from "next/image";
+import { ModalDelete } from "../components/ModalDelete";
 
 const books = [
     {
+      id: 1,
       coverImage: '/images/livres/harry2.jpg',
       title: 'Harry Potter et la chambre des secrets ',
       author: 'J.K Rowlings',
@@ -19,6 +20,7 @@ const books = [
       rating: 4,
     },
     {
+      id: 2,
       coverImage: '/images/livres/harry2.jpg',
       title: 'Titre du Livre 2',
       author: 'Auteur 2',
@@ -26,6 +28,7 @@ const books = [
       rating: 5,
     },
     {
+      id: 3,
       coverImage: '/images/livres/harry2.jpg',
       title: 'Harry Potter et la chambre des secrets ',
       author: 'J.K Rowlings',
@@ -33,6 +36,7 @@ const books = [
       rating: 4,
     },
     {
+      id: 4,
       coverImage: '/images/livres/harry2.jpg',
       title: 'Harry Potter et la chambre des secrets ',
       author: 'J.K Rowlings',
@@ -40,6 +44,7 @@ const books = [
       rating: 4,
     },
     {
+      id: 5,
         coverImage: '/images/livres/harry2.jpg',
         title: 'Harry Potter et la chambre des secrets ',
         author: 'J.K Rowlings',
@@ -47,6 +52,7 @@ const books = [
         rating: 4,
       },
       {
+        id: 6,
         coverImage: '/images/livres/harry2.jpg',
         title: 'Harry Potter et la chambre des secrets ',
         author: 'J.K Rowlings',
@@ -54,6 +60,7 @@ const books = [
         rating: 4,
       },
       {
+        id: 7,
         coverImage: '/images/livres/harry2.jpg',
         title: 'Harry Potter et la chambre des secrets ',
         author: 'J.K Rowlings',
@@ -61,6 +68,7 @@ const books = [
         rating: 4,
       },
       {
+        id: 8,
         coverImage: '/images/livres/harry2.jpg',
         title: 'Harry Potter et la chambre des secrets ',
         author: 'J.K Rowlings',
@@ -68,6 +76,7 @@ const books = [
         rating: 4,
       },
       {
+        id: 9,
         coverImage: '/images/livres/harry2.jpg',
         title: 'Harry Potter et la chambre des secrets ',
         author: 'J.K Rowlings',
@@ -75,6 +84,7 @@ const books = [
         rating: 4,
       },
       {
+        id: 10,
         coverImage: '/images/livres/harry2.jpg',
         title: 'Harry Potter et la chambre des secrets ',
         author: 'J.K Rowlings',
@@ -88,6 +98,10 @@ const books = [
   function AuthorsDetails() {
     const [isAdmin, setIsAdmin] = useState(false); // Déclare une variable d'état pour le bouton
     const router = useRouter(); // Initialisation du router
+    // const [showModal, setShowModal] = useState(false); // Déclare une variable d'état pour le pop up
+    const [booksList, setBooks] = useState(books);
+    const [modalIsOpen, setModalIsOpen] = useState(false);
+    const [selectedBookName, setSelectedBookName] = useState('');
   
     // Fonction pour gérer le clic sur le bouton
     const handleAdminButtonClick = () => {
@@ -95,20 +109,30 @@ const books = [
       router.push('/authors_details'); // Naviguer vers la page après le clic
     };
 
-    const handleDelBook = () => {
+    const handleDelBook = (id: number, bookName: string) => {
       if (!isAdmin) {
         router.push('/books')
       }
       else {
-        router.push('/authors')
+        setSelectedBookName(bookName);
+        setModalIsOpen(true);
+
       }
     }
+
+    const deleteBook = (id: number) => {
+      const updatedBooks = booksList.filter(booksList => booksList.id !== id);
+      setBooks(updatedBooks);
+      console.log(booksList)
+    };
   
     // Fonction pour appliquer un style en fonction de l'état de isAdmin
     const getButtonStyle = () => {
       return isAdmin ? "bg-red-400" : "bg-custom-light"; // Applique un style différent si isAdmin est true
     };
   
+    
+
     return (
       <GlobalLayout>
         <AuthorDesc
@@ -118,9 +142,9 @@ const books = [
           hauteur={"h-[70vh]"}
           largeur={"w-full"}
         />
-        
+
         <div className="flex flex-wrap gap-8 ml-10 mt-10">
-          {books.map((book, index) => (
+          {booksList.map((book, index) => (
             <BookCard
               key={index}
               coverImage={book.coverImage}
@@ -131,7 +155,7 @@ const books = [
               hauteur={"h-48"}
               largeur={"w-32"}
               isAdmin={isAdmin}
-              onClick={handleDelBook}
+              onClick={() => handleDelBook(book.id, book.title)}
              
             />
           ))}
@@ -144,7 +168,20 @@ const books = [
               onClick={() => router.push('/authors_details')}
             />
           )}
+
+          {isAdmin && (
+            <AddBookCard
+              hauteur={"h-48"}
+              largeur={"w-32"}
+              
+              onClick={() => deleteBook(4)}
+            />
+          )}
         </div>
+           
+
+    {modalIsOpen ? <ModalDelete setModalIsOpen={setModalIsOpen} bookName={selectedBookName}/> : <></>}
+
   
         <ButtonAdmin onClick={handleAdminButtonClick} className={getButtonStyle()} aria-label="Authors">
           <Image src="/images/icon/icons8-avatar-241.png" alt="Avatar" width={24} height={24} />
