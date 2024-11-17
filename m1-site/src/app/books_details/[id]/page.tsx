@@ -1,50 +1,79 @@
 'use client';
 
-import { useEffect, useState } from "react"; // Importation du hook useState
+import { useEffect, useState } from "react";
 import { GlobalLayout } from "../../GlobalLayout";
-import { useParams } from "next/navigation"; // Initialisation du router
+import { useParams } from "next/navigation";
 import { ButtonAdmin } from "../../components/BoutonAdmin";
 import { useListBookProviders } from '../../providers/useBookProviders';
+import { useAdviceProviders } from "../../providers/useAdviceProvides";
 import Image from "next/image";
+import { AddAdvice } from "../../components/AddAdvice";
 import { BookDesc } from "../../components/BookDesc";
-import { AdviceCard } from "../../components/AdviceCard"; // Importer le nouveau composant
+import { AdviceCard } from "../../components/AdviceCard";
+import { AdviceModel } from "../../models/AdvicesModel";
+import { Drawer, IconButton } from "@mui/material";
+import CloseIcon from "@mui/icons-material/Close";
 
 function BookDetails() {
-  const [isAdmin, setIsAdmin] = useState(false); // Déclare une variable d'état pour le bouton
-  const [averageRating, setAverageRating] = useState(0); // État pour la moyenne des étoiles (type number)
+  const [isAdmin, setIsAdmin] = useState(false);
+  const [averageRating, setAverageRating] = useState(0);
+  const [isDrawerOpen, setIsDrawerOpen] = useState(false);
+  const [localAdvices, setLocalAdvices] = useState<AdviceModel[]>([]); // Typé comme Advice
+  const { addAdvice } = useAdviceProviders();
   const { id } = useParams();
-  const { book, loadBookById } = useListBookProviders(); // Données de l'auteur
+  const { book, loadBookById } = useListBookProviders();
 
+  // Charger les détails du livre
   useEffect(() => {
     if (typeof id === "string" && id !== book?.id) {
-      loadBookById(id); // Charger l'auteur par ID
+      loadBookById(id);
     }
   }, [id, book?.id, loadBookById]);
 
-  // Calculer la moyenne des étoiles lorsque book.advices change
+  // Calcul de la note moyenne
   useEffect(() => {
     if (Array.isArray(book?.advices) && book.advices.length > 0) {
       const totalStars = book.advices.reduce((sum, advice) => sum + advice.stars, 0);
       const average = totalStars / book.advices.length;
-      setAverageRating(parseFloat(average.toFixed(1))); // Convertir en number après arrondi
+      setAverageRating(parseFloat(average.toFixed(1)));
     } else {
-      setAverageRating(0); // Pas d'avis, donc pas de moyenne
+      setAverageRating(0);
     }
   }, [book?.advices]);
 
-  // Fonction pour gérer le clic sur le bouton
-  const handleAdminButtonClick = () => {
-    setIsAdmin(!isAdmin); // Inverse l'état de isAdmin (true/false)
+  // Ouvrir/fermer le Drawer
+  const toggleDrawer = () => {
+    setIsDrawerOpen(!isDrawerOpen);
   };
 
-  // Fonction pour appliquer un style en fonction de l'état de isAdmin
-  const getButtonStyle = () => {
-    return isAdmin ? "bg-red-400" : "bg-custom-light"; // Applique un style différent si isAdmin est true
+  // Ajouter un nouvel avis
+  const handleAddAdvice = async (newAdvice: { comment: string; stars: number }) => {
+    window.location.reload();
+    if (!book?.id) {
+      console.error("ID du livre manquant");
+      return;
+    }
+
+    const adviceWithBookId: AdviceModel = {
+      id: "", // L'id sera généré ou assigné par le backend
+      stars: newAdvice.stars,
+      comment: newAdvice.comment,
+      creationDate: new Date().toISOString(),
+      bookId: book.id,
+    };
+
+    try {
+      const addedAdvice = await addAdvice(adviceWithBookId);
+      console.log("Avis ajouté : ", addedAdvice);
+      setLocalAdvices((prevAdvices) => [...prevAdvices, addedAdvice]); // Mettre à jour les avis locaux
+    } catch (error) {
+      console.error("Erreur lors de l'ajout de l'avis :", error);
+    }
   };
 
   return (
     <GlobalLayout>
-      <div className="flex flex-col items-start gap-8"> {/* Conteneur parent flex en colonne */}
+      <div className="flex flex-col items-start gap-8">
         {/* Détails du livre */}
         <div className="w-full">
           <BookDesc
@@ -59,9 +88,17 @@ function BookDetails() {
           />
         </div>
 
-        {/* Avis sous les détails du livre */}
-        <div className="w-full mt-6 p-4"> {/* Section des avis */}
-          <h2 className="text-xl font-bold mb-4">Avis des lecteurs</h2>
+        <button onClick={toggleDrawer} className="bg-custom-light py-2 px-4 rounded">
+          Voir les avis
+        </button>
+
+        <Drawer anchor="right" open={isDrawerOpen} onClose={toggleDrawer}>
+          <div className="w-80 p-4">
+            <IconButton onClick={toggleDrawer} className="absolute top-2 right-2">
+              <CloseIcon />
+            </IconButton>
+
+            <h2 className="text-xl font-bold mb-4">Avis des lecteurs</h2>
           {Array.isArray(book?.advices) && book?.advices.length > 0 ? (
             book.advices.map((advice) => (
               <AdviceCard key={advice.id} advice={advice} /> // Utilisation du nouveau composant
@@ -69,10 +106,14 @@ function BookDetails() {
           ) : (
             <p>Aucun Avis trouvé pour ce Livre.</p>
           )}
-        </div>
+
+            {/* Ajout d'un nouvel avis */}
+            <AddAdvice onSubmit={handleAddAdvice} />
+          </div>
+        </Drawer>
       </div>
 
-      <ButtonAdmin onClick={handleAdminButtonClick} className={getButtonStyle()} aria-label="Authors">
+      <ButtonAdmin onClick={() => setIsAdmin(!isAdmin)} className={isAdmin ? "bg-red-400" : "bg-custom-light"} aria-label="Authors">
         <Image src="/images/icon/icons8-paramètres-24.png" alt="Avatar" width={24} height={24} />
       </ButtonAdmin>
     </GlobalLayout>
