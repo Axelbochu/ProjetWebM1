@@ -57,7 +57,7 @@ export const useListBookProviders = () => {
           'Content-Type': 'multipart/form-data',
         },
       });
-      if (response.status === 200) {
+      if (response.status === 201) {
         loadBooks(searchQuery); // Recharge les livres après la création
         return response.data;
       } else {
@@ -84,20 +84,27 @@ export const useListBookProviders = () => {
   }, [sortType, searchQuery]);
 
   const highestRatedBook = useMemo(() => {
-    return books.reduce((topBook, currentBook) =>
+    return books2.reduce((topBook, currentBook) =>
       (topBook && topBook.averageRating >= currentBook.averageRating ? topBook : currentBook),
       null as BookModel2 | null
     );
-  }, [books]);
+  }, [books2]);
+  const topRatedBooksExcludingFirst = useMemo(() => {
+    return [...books2]
+      .sort((a, b) => b.averageRating - a.averageRating) // Trie par note décroissante
+      .slice(1, 5); // Exclut le premier et prend les 4 suivants
+  }, [books2]);
+  
 
   return {
     books,
     book,
     books2,
-    setSearchQuery,
+    setSearchQuery, 
     setSortType,
     loadBookById,
     highestRatedBook,
+    topRatedBooksExcludingFirst,
     deleteBook,
     createBook,
   };

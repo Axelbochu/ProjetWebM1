@@ -93,6 +93,7 @@ function AuthorsDetails() {
       <ButtonAdmin onClick={handleAdminButtonClick} className={getButtonStyle()} aria-label="Authors">
         <Image src="/images/icon/icons8-paramètres-24.png" alt="Avatar" width={24} height={24} />
       </ButtonAdmin>
+      
     </GlobalLayout>
   );
 }

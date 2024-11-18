@@ -37,7 +37,7 @@ const sugestion = [
 
 function App() {
   const router = useRouter();
-  const { books, highestRatedBook } = useListBookProviders();
+  const { highestRatedBook,topRatedBooksExcludingFirst } = useListBookProviders();
 
   return (
     <GlobalLayout>
@@ -54,7 +54,7 @@ function App() {
           <div className="absolute w-full sm:w-1/2 xl:w-1/4 right-20 top-16 ">
             <h2 className="text-custom-dark font-elegant text-4xl mb-4">Le Mieux Noté</h2>
             <BookCard
-              coverImage={highestRatedBook.coverImage || "/images/livres/harry2.jpg"}
+              coverImage={highestRatedBook.photoPath || "/images/livres/harry2.jpg"}
               title={highestRatedBook.title}
               author={`${highestRatedBook.author.firstName} ${highestRatedBook.author.lastName}`}
               rating={highestRatedBook.averageRating}
@@ -62,7 +62,7 @@ function App() {
               hauteur="h-[70vh]"
               largeur="w-full"
               isAdmin={false}
-              onClick={() => router.push('/books')}
+              onClick={() => router.push(`/books_details/${highestRatedBook.id}`)} 
             />
           </div>
         )}
@@ -70,18 +70,18 @@ function App() {
         {/* Left side: Other books */}
         <h3 className='text-custom-dark font-elegant  text-3xl mt-11'>Nos Recommandations :</h3>
         <div className="w-full sm:w-1/2 lg:w-3/5 xl:w-3/4 flex flex-wrap gap-8 ">
-          {sugestion.map((book, index) => (
+          {topRatedBooksExcludingFirst.map((book, index) => (
             <BookCard
               key={index}
-              coverImage={book.coverImage}
+              coverImage={book.photoPath || "/images/livres/fermer-livre-couverture-bleue_1101-92-removebg-preview.png"}
               title={book.title}
-              author={book.author}
-              rating={book.rating}
-              date={book.date}
+              author={`${book.author.firstName} ${book.author.lastName}`}
+              rating={book.averageRating}
+              date={book.publishedYear}
               hauteur="h-48"
               largeur="w-32"
               isAdmin={false}
-              onClick={() => router.push('/books')}
+              onClick={() => router.push(`/books_details/${book.id}`)}
             />
           ))}
         </div>

@@ -8,16 +8,18 @@ interface BookCardProps {
   line2: number;
   rating: number;
   isBook: boolean;
+  isAdmin?: boolean; // Ajout de la propriété pour indiquer le mode admin
   onClick?: () => void;
 }
 
 export const Card: React.FC<BookCardProps> = ({
   coverImage,
-  title, // titre du livre ou le nom de l'auteur en fonction de la page 
+  title,
   line1,
   line2,
-  rating, 
-  isBook, // on verifie si c'est un livre ou un auteur
+  rating,
+  isBook,
+  isAdmin = false, // Par défaut, non-admin
   onClick,
 }) => {
   const renderStars = () => {
@@ -34,28 +36,33 @@ export const Card: React.FC<BookCardProps> = ({
 
   return (
     <div
-      className="bg-white w-56 h-96 rounded-xl overflow-hidden shadow-xl hover:scale-105 hover:shadow-2xl transform duration-500 cursor-pointer  flex flex-col mt-4 mb-4"
+      className="bg-white w-56 h-96 rounded-xl overflow-hidden shadow-xl hover:scale-105 hover:shadow-2xl transform duration-500 cursor-pointer flex flex-col mt-4 mb-4 relative"
       onClick={onClick}
       role="button"
       aria-label={`Voir plus d'infos sur ${title}`}
     >
-      <div className="p-4 flex-1 text-custom-dark">
+      {/* Superposition rouge si isAdmin est vrai */}
+      {isAdmin && (
+        <div className="absolute inset-0 bg-red-500 bg-opacity-50 flex items-center justify-center z-10">
+          <span className="text-white font-bold text-lg">Cliquez pour supprimer</span>
+        </div>
+      )}
+
+      <div className="p-4 flex-1 text-custom-dark z-0">
         <h3 className="text-lg font-bold">{title}</h3>
         <p className="text-sm text-gray-600">{line1}</p>
         <p className="text-sm text-gray-500">{line2}</p>
         <div className="flex mt-2">{renderStars()}</div>
       </div>
 
-      {/* Image en bas */}
-      <div className="relative w-full h-full bg-custom-light ">
+      <div className="relative w-full h-full bg-custom-light">
         <Image
           src={coverImage}
           alt={`Couverture de ${title}`}
-          layout="fill"        // Utilisation de "fill" pour prendre toute la place disponible
-          objectFit={isBook ? 'scale-down' : 'cover'}    // Pour couvrir la zone de l'image
-          className={isBook ? 'p-2 ' : ''} // Ajoute un rayon aux coins du bas
+          layout="fill"
+          objectFit={isBook ? 'scale-down' : 'cover'}
+          className={isBook ? 'p-2' : ''}
         />
-        
       </div>
     </div>
   );

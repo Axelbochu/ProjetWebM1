@@ -9,10 +9,10 @@ import { SearchBar } from '../components/searchBar';
 import { useListBookProviders } from '../providers/useBookProviders'; // Import the custom hook
 import { ButtonAdmin } from "../components/BoutonAdmin";
 import Image from "next/image";
-import { useEffect, useState } from "react"; // Importation du hook useState
+import {  useState } from "react"; // Importation du hook useState
 import { ModalDelete } from "../components/ModalDelete";
 import { ModalAddBook } from "../components/ModalAddBook";
-import { AddBookCard } from "../components/AddBookCard";
+
 
 function Books() {
   const { books2, setSearchQuery, setSortType } = useListBookProviders(); 
@@ -27,7 +27,7 @@ function Books() {
   };
 
   const getButtonStyle = () => {
-    return isAdmin ? "bg-red-400" : "bg-custom-light"; // Appliquer un style différent si isAdmin est true
+    return isAdmin ? "bg-red-400" : "bg-custom-light hover:bg-red-400"; // Appliquer un style différent si isAdmin est true
   };
 
   const handleDelBook = (id: string) => {
@@ -63,24 +63,18 @@ function Books() {
             line2={book.publishedYear || 0 }
             rating={book.averageRating || 0} 
             isBook={true}
-            // onClick={() => router.push('/books_details/'+book.id)}
             onClick={() => handleDelBook(book.id)}
+            isAdmin={isAdmin}
           />
         ))
       )}
-      {isAdmin && (
-            <AddBookCard
-              hauteur={"h-48"}
-              largeur={"w-32"}
-              onClick={() => setModalAddBookIsOpen(true)}
-            />
-        )}
+      
       </div>
 
       {modalDeleteIsOpen ? <ModalDelete setModalDeleteIsOpen={setModalDeleteIsOpen} id={selectedId}/> : <></>}
       {modalAddBookIsOpen ? <ModalAddBook setModalAddBookIsOpen={setModalAddBookIsOpen} /> : <></>}
 
-      <ButtonAdmin onClick={() => setModalAddBookIsOpen(true)} className={`${getButtonStyle()} mb-12`} aria-label="Authors">
+      <ButtonAdmin onClick={() => setModalAddBookIsOpen(true)} className={`bg-custom-light mb-12 hover:bg-red-400`} aria-label="Authors">
         <Image src="/images/icon/icons8-ajouter-50.png" alt="" width={24} height={24} />
       </ButtonAdmin>
 

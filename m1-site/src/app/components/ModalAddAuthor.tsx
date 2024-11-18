@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { useListBookProviders } from '../providers/useBookProviders'; // Importez le provider de livres
+import { useListAuthorProviders } from '../providers/useAuthorsProviders'; // Importez le provider de livres
 
 
 interface ModalProps {
@@ -14,7 +14,7 @@ export const ModalAddAuthor: React.FC<ModalProps> = ({ setModalAddAuthorIsOpen, 
   const [image, setImage] = useState<File | null>(null);
 
 
-  const { createBook } = useListBookProviders(); // Utilisez le provider de livres
+  const { createAuthor } = useListAuthorProviders(); // Utilisez le provider de livres 
 
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files.length > 0) {
@@ -27,21 +27,23 @@ export const ModalAddAuthor: React.FC<ModalProps> = ({ setModalAddAuthorIsOpen, 
     e.preventDefault();
 
     const formData = new FormData();
-    formData.append('name', name);
-    formData.append('surname', surname);
+    formData.append('firstName', name);
+    formData.append('lastName', surname);
     formData.append('biography', biography);
     if (image) {
-      formData.append('picture', image); // Appending the image file
+      formData.append('file', image); // Appending the image file
     }
 
     try {
       console.log("try")
-      const data = await createBook(formData);
+      const data = await createAuthor(formData);
       console.log('Book created successfully', data);
-      setModalAddAuthorIsOpen(false); // Fermez le modal après la création
+      
     } catch (error) {
       console.error('Error creating book:', error);
     }
+    setModalAddAuthorIsOpen(false); // Fermez le modal après la création
+    window.location.reload();
   };
 
   return (

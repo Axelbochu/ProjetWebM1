@@ -36,7 +36,24 @@ export const useListAuthorProviders = () => {
         console.error("Error fetching author by ID:", error);
       });
   };
-
+  const createAuthor = async (formData: FormData) => {
+    try {
+      const response = await axios.post('http://localhost:3001/authors', formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        },
+      });
+      if (response.status === 201) {
+       
+        return response.data;
+      } else {
+        throw new Error('Failed to create authors');
+      }
+    } catch (error) {
+      console.error('Error creating authors:', error);
+      throw error;
+    }
+  };
   // Effet pour charger les auteurs quand la requête change
   useEffect(() => {
     loadAuthors(searchQuery);
@@ -47,5 +64,6 @@ export const useListAuthorProviders = () => {
     author, // État pour un seul auteur
     setSearchQuery, // Fonction pour mettre à jour la requête
     loadAuthorById, // Fonction pour charger un auteur par ID
+    createAuthor
   };
 };
