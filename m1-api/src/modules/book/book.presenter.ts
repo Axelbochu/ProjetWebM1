@@ -8,7 +8,7 @@ export class BookPresenter {
   publishedYear: number;
   author: AuthorModel;
   averageRating: number | null;
-  photoPath: string;
+  photoPath?: string;
   price: number | null;
 
   private constructor(book: BookPresenter) {
@@ -20,14 +20,15 @@ export class BookPresenter {
     author: AuthorModel,
     averageRating: number | null,
   ): BookPresenter {
+    const baseURL = process.env.BASE_URL || 'http://localhost:3000/';
     return new BookPresenter({
       id: book.id,
       title: book.title,
       publishedYear: book.yearPublished,
       author: author,
       averageRating: averageRating,
-      photoPath: book.picture, // Image du livre (par exemple, une URL ou un chemin relatif)
+      photoPath: book.picture ? `${baseURL}${book.picture}` : null,
       price: book.price, // Prix du livre, s'il existe
     });
   }
-}
+} 

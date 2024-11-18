@@ -57,7 +57,7 @@ export class BookController {
   ): Promise<DetailsBookPresenter> {
     const book = await this.bookService.getBook(id);
     const advices = await this.adviceService.listAdvicesForBook(id);
-
+    console.log(DetailsBookPresenter.from(book, book.author, advices));
     return DetailsBookPresenter.from(book, book.author, advices);
   }
   @Post()

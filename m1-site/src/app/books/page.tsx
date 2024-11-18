@@ -15,7 +15,7 @@ import { ModalAddBook } from "../components/ModalAddBook";
 import { AddBookCard } from "../components/AddBookCard";
 
 function Books() {
-  const { books, setSearchQuery, setSortType } = useListBookProviders(); 
+  const { books2, setSearchQuery, setSortType } = useListBookProviders(); 
   const router = useRouter();
   const [isAdmin, setIsAdmin] = useState(false); // Déclare une variable d'état pour le bouton
   const [modalDeleteIsOpen, setModalDeleteIsOpen] = useState(false);
@@ -49,11 +49,11 @@ function Books() {
         <SortDropdown onSortChange={setSortType} />
       </div>
       <div className="  ml-10 mr-10 flex flex-wrap justify-center gap-6">
-      {books.length === 0 ? (
+      {books2.length === 0 ? (
           <p className="text-center text-xl text-gray-600">Aucun livre trouvé.</p>
         ) : (
           
-        books.map((book) => (
+        books2.map((book) => (
         
           <Card
             key={book.id}

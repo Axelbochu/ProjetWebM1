@@ -24,7 +24,10 @@ export class DetailsAuthorPresenter {
       lastName: author.lastName,
       biography: author.biography,
       photoPath: author.photoPath ? `${baseURL}${author.photoPath}` : null,
-      books: books,
+      books: books.map(book => ({
+        ...book,
+        picture: book.picture ? `${baseURL}${book.picture}` : null,
+      })),
     });
   }
 }

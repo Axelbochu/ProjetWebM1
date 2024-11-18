@@ -46,7 +46,7 @@ export const BookDesc: React.FC<Book_data> = ({ coverImage, book_name, price, ra
           <p className="flex text-4xl">{renderStars()}</p>
         </div>
         {/* Auteur avec redirection */}
-        <div className="p-3 max-h-60 overflow-auto">
+        <div className="p-3 max-h-65 overflow-auto">
           <p
             className="font-elegant cursor-pointer hover:underline text-2xl"
             onClick={handleAuthorClick} // Ajout de l'événement de clic

@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useState } from "react";
+import { useEffect, useState,useMemo  } from "react";
 import { GlobalLayout } from "../../GlobalLayout";
 import { useParams } from "next/navigation";
 import { ButtonAdmin } from "../../components/BoutonAdmin";
@@ -14,6 +14,7 @@ import { AdviceModel } from "../../models/AdvicesModel";
 import { Drawer, IconButton } from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
 
+
 function BookDetails() {
   const [isAdmin, setIsAdmin] = useState(false);
   const [averageRating, setAverageRating] = useState(0);
@@ -22,7 +23,8 @@ function BookDetails() {
   const { addAdvice } = useAdviceProviders();
   const { id } = useParams();
   const { book, loadBookById } = useListBookProviders();
-
+  const [sortOrder, setSortOrder] = useState<"asc" | "desc">("desc"); // État pour le tri
+  
   // Charger les détails du livre
   useEffect(() => {
     if (typeof id === "string" && id !== book?.id) {
@@ -40,6 +42,17 @@ function BookDetails() {
       setAverageRating(0);
     }
   }, [book?.advices]);
+  
+   // Trier les avis par date
+   const sortedAdvices = useMemo(() => {
+    if (!Array.isArray(book?.advices)) return [];
+    const sorted = [...book.advices].sort((a, b) => {
+      const dateA = new Date(a.creationDate).getTime();
+      const dateB = new Date(b.creationDate).getTime();
+      return sortOrder === "asc" ? dateA - dateB : dateB - dateA;
+    });
+    return sorted;
+  }, [book?.advices, sortOrder]);
 
   // Ouvrir/fermer le Drawer
   const toggleDrawer = () => {
@@ -55,7 +68,7 @@ function BookDetails() {
     }
 
     const adviceWithBookId: AdviceModel = {
-      id: "", // L'id sera généré ou assigné par le backend
+    
       stars: newAdvice.stars,
       comment: newAdvice.comment,
       creationDate: new Date().toISOString(),
@@ -99,13 +112,23 @@ function BookDetails() {
             </IconButton>
 
             <h2 className="text-xl font-bold mb-4">Avis des lecteurs</h2>
-          {Array.isArray(book?.advices) && book?.advices.length > 0 ? (
-            book.advices.map((advice) => (
-              <AdviceCard key={advice.id} advice={advice} />
-            ))
-          ) : (
-            <p>Aucun Avis trouvé pour ce Livre.</p>
-          )}
+
+            {/* Bouton pour trier */}
+            <button
+              onClick={() => setSortOrder(sortOrder === "asc" ? "desc" : "asc")}
+              className="mb-4 bg-custom-light py-2 px-4 rounded"
+            >
+              Trier par date ({sortOrder === "asc" ? "Croissant" : "Décroissant"})
+            </button>
+
+            {/* Afficher les avis triés */}
+            {sortedAdvices.length > 0 ? (
+              sortedAdvices.map((advice) => (
+                <AdviceCard key={advice.id} advice={advice} />
+              ))
+            ) : (
+              <p>Aucun Avis trouvé pour ce Livre.</p>
+            )}
 
             {/* Ajout d'un nouvel avis */}
             <AddAdvice onSubmit={handleAddAdvice} />

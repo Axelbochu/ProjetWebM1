@@ -2,9 +2,10 @@ import axios from "axios";
 import { useEffect, useMemo, useState } from "react";
 import { BookDetailsModel } from "../models/BookDetailsModel";
 import { BookModel } from "../models/BookModel";
-
+import { BookModel2 } from "../models/BookModel";
 export const useListBookProviders = () => {
   const [books, setBooks] = useState<BookModel[]>([]);
+  const [books2, setBooks2] = useState<BookModel2[]>([]);
   const [searchQuery, setSearchQuery] = useState<string>("");
   const [sortType, setSortType] = useState<'alphabetical' | 'rating' | 'default'>('default');
   const [book, setBook] = useState<BookDetailsModel | null>(null);
@@ -14,9 +15,9 @@ export const useListBookProviders = () => {
       ? `http://localhost:3001/books/searchBook/${encodeURIComponent(query)}`
       : "http://localhost:3001/books";
 
-    axios.get<BookModel[]>(url)
+    axios.get<BookModel2[]>(url)
       .then((response) => {
-        setBooks(response.data);
+        setBooks2(response.data);
       })
       .catch((error) => {
         console.error("Error fetching books:", error);
@@ -42,6 +43,7 @@ export const useListBookProviders = () => {
       .get<BookDetailsModel>(url)
       .then((response) => {
         setBook(response.data);
+        console.log(response.data);
       })
       .catch((error) => {
         console.error("Error fetching author by ID:", error);
@@ -84,13 +86,14 @@ export const useListBookProviders = () => {
   const highestRatedBook = useMemo(() => {
     return books.reduce((topBook, currentBook) =>
       (topBook && topBook.averageRating >= currentBook.averageRating ? topBook : currentBook),
-      null as BookModel | null
+      null as BookModel2 | null
     );
   }, [books]);
 
   return {
     books,
     book,
+    books2,
     setSearchQuery,
     setSortType,
     loadBookById,

@@ -65,10 +65,12 @@ export const ModalAddBook: React.FC<ModalProps> = ({ setModalAddBookIsOpen, onCl
       console.log(image)
       const data = await createBook(formData);
       console.log('Book created successfully', data);
-      setModalAddBookIsOpen(false); // Fermez le modal après la création
+
     } catch (error) {
       console.error('Error creating book:', error);
     }
+    setModalAddBookIsOpen(false); // Fermez le modal après la création
+    window.location.reload();
   };
 
   useEffect(() => {

@@ -62,7 +62,7 @@ function AuthorsDetails() {
         {author?.books && author.books.length > 0 ? (author.books.map((book, index) => (
                 <BookCard
                   key={index}
-                  coverImage={book.photoPath || "/images/livres/fermer-livre-couverture-bleue_1101-92-removebg-preview.png"} // Image du livre, avec valeur par défaut
+                  coverImage={book.picture || "/images/livres/fermer-livre-couverture-bleue_1101-92-removebg-preview.png"} // Image du livre, avec valeur par défaut
                   title={book.title}
                   author={`${book.author.firstName} ${book.author.lastName}`} // Nom complet de l'auteur
                   rating={book.averageRating} // Note moyenne du livre
