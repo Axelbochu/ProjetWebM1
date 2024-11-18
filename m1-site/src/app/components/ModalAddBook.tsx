@@ -47,17 +47,22 @@ export const ModalAddBook: React.FC<ModalProps> = ({ setModalAddBookIsOpen, onCl
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    const formData = new FormData();
-    formData.append('title', title);
-    formData.append('authorId', searchId);
-    formData.append('yearPublished', date);
-    formData.append('price', price);
-    if (image) {
-      formData.append('picture', image); // Appending the image file
-    }
+
 
     try {
-      console.log("try")
+      const formData = new FormData();
+      formData.append('title', title); 
+      formData.append('authorId', searchId);
+      formData.append('yearPublished', date.toString());
+      formData.append('price', price.toString());
+      if (image) {
+        formData.append('file', image); // Appending the image file
+      }
+      console.log(title)
+      console.log(searchId)
+      console.log(date)
+      console.log(price)
+      console.log(image)
       const data = await createBook(formData);
       console.log('Book created successfully', data);
       setModalAddBookIsOpen(false); // Fermez le modal après la création
