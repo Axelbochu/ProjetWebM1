@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { useListAuthorProviders } from '../providers/useAuthorsProviders';
+import { useListBookProviders } from '../providers/useBookProviders'; // Importez le provider de livres
 import { AuthorModel } from '../models/AuthorsModel';
 
 interface ModalProps {
@@ -18,6 +19,7 @@ export const ModalAddBook: React.FC<ModalProps> = ({ setModalAddBookIsOpen, onCl
   const [suggestions, setSuggestions] = useState<AuthorModel[]>([]);
 
   const { authors, setSearchQuery } = useListAuthorProviders();
+  const { createBook } = useListBookProviders(); // Utilisez le provider de livres
 
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files.length > 0) {
@@ -45,49 +47,20 @@ export const ModalAddBook: React.FC<ModalProps> = ({ setModalAddBookIsOpen, onCl
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    let imageBase64 = '';
-
+    const formData = new FormData();
+    formData.append('title', title);
+    formData.append('authorId', searchId);
+    formData.append('yearPublished', date);
+    formData.append('price', price);
     if (image) {
-      const reader = new FileReader();
-      reader.readAsDataURL(image);
-      reader.onloadend = async () => {
-        imageBase64 = reader.result as string; // Convertir l'image en base64
-        await sendBookData(imageBase64); // Appelez une autre fonction pour envoyer les données
-      };
-      reader.onerror = () => {
-        console.error('Error reading the image file');
-      };
-      return; // Ne pas continuer avant que la lecture de l'image soit terminée
-    } else {
-      await sendBookData(imageBase64); // Si pas d'image, envoyez les autres données
+      formData.append('picture', image); // Appending the image file
     }
-  };
-
-  const sendBookData = async (imageBase64: string) => {
-    const data = {
-      title,
-      authorId: searchId,
-      yearPublished: parseInt(date),
-      price: parseInt(price),
-      picture: imageBase64, // Ajoutez l'image base64 ici
-    };
 
     try {
-      const response = await fetch('http://localhost:3001/books', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(data),
-      });
-
-      if (!response.ok) {
-        throw new Error('Failed to upload book');
-      }
-
-      const result = await response.json();
-      console.log('Book created successfully', result);
-      window.location.reload(); // Recharger la page après la soumission réussie
+      console.log("try")
+      const data = await createBook(formData);
+      console.log('Book created successfully', data);
+      setModalAddBookIsOpen(false); // Fermez le modal après la création
     } catch (error) {
       console.error('Error creating book:', error);
     }

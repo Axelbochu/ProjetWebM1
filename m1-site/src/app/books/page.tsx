@@ -7,9 +7,35 @@ import { SortDropdown } from '../components/SortDropdown';
 import { Title } from '../components/Title';
 import { SearchBar } from '../components/searchBar';
 import { useListBookProviders } from '../providers/useBookProviders'; // Import the custom hook
+import { ButtonAdmin } from "../components/BoutonAdmin";
+import Image from "next/image";
+import { useEffect, useState } from "react"; // Importation du hook useState
+import { ModalDelete } from "../components/ModalDelete";
+
 function Books() {
   const { books, setSearchQuery, setSortType } = useListBookProviders(); 
   const router = useRouter();
+  const [isAdmin, setIsAdmin] = useState(false); // Déclare une variable d'état pour le bouton
+  const [modalDeleteIsOpen, setModalDeleteIsOpen] = useState(false);
+  const [selectedId, setSelectedId] = useState('');
+
+  const handleAdminButtonClick = () => {
+    setIsAdmin(!isAdmin); // Inverser l'état de isAdmin (true/false)
+  };
+
+  const getButtonStyle = () => {
+    return isAdmin ? "bg-red-400" : "bg-custom-light"; // Appliquer un style différent si isAdmin est true
+  };
+
+  const handleDelBook = (id: string) => {
+    if (!isAdmin) {
+      router.push(`/books_details/${id}`)
+    }
+    else {
+      setSelectedId(id);
+      setModalDeleteIsOpen(true);
+    }
+  }
 
 
   return (
@@ -34,11 +60,17 @@ function Books() {
             line2={book.publishedYear || 0 }
             rating={book.averageRating || 0} 
             isBook={true}
-            onClick={() => router.push('/books_details/'+book.id)}
+            // onClick={() => router.push('/books_details/'+book.id)}
+            onClick={() => handleDelBook(book.id)}
           />
         ))
       )}
       </div>
+
+      {modalDeleteIsOpen ? <ModalDelete setModalDeleteIsOpen={setModalDeleteIsOpen} id={selectedId}/> : <></>}
+      <ButtonAdmin onClick={handleAdminButtonClick} className={getButtonStyle()} aria-label="Authors">
+        <Image src="/images/icon/icons8-paramètres-24.png" alt="Avatar" width={24} height={24} />
+      </ButtonAdmin>
     </GlobalLayout>
   );
 }

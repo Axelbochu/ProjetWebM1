@@ -1,9 +1,11 @@
+import { Transform } from 'class-transformer';
 import { IsInt, IsNumber, IsOptional, IsString, Max } from 'class-validator';
 
 export class CreateBookDto {
   @IsString()
   title: string;
 
+  @Transform(({ value }) => parseInt(value, 10)) // Convertit automatiquement en nombre
   @IsInt()
   @Max(new Date().getFullYear(), {
     message:
@@ -14,6 +16,7 @@ export class CreateBookDto {
   @IsString()
   authorId: string;
 
+  @Transform(({ value }) => (value ? parseFloat(value) : undefined)) // Gestion optionnelle des nombres
   @IsNumber()
   @IsOptional()
   price?: number;

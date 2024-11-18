@@ -87,7 +87,8 @@ export class BookController {
     @UploadedFile() file: Express.Multer.File,
   ): Promise<BookPresenter> {
     const picture = file ? file.path : null; // Récupérer le chemin du fichier s'il est fourni
-
+    console.log(input);
+    console.log(picture);
     const book = await this.bookService.createBook({
       ...input,
       picture, // Inclure le chemin de l'image dans les données du livre

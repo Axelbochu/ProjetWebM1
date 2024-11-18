@@ -23,7 +23,7 @@ export const useListBookProviders = () => {
       });
   };
 
-  const deleteBook = (id: string) => { 
+  const deleteBook = (id: string) => {
     const url = `http://localhost:3001/books/${encodeURIComponent(id)}`;
 
     axios.delete(url)
@@ -35,25 +35,42 @@ export const useListBookProviders = () => {
       });
   }
 
-  //fonction pour charger un auteur par son ID
   const loadBookById = (id: string) => {
     const url = `http://localhost:3001/books/${encodeURIComponent(id)}`;
 
     axios
       .get<BookDetailsModel>(url)
       .then((response) => {
-        setBook(response.data); // Met à jour l'état d'un seul auteur
+        setBook(response.data);
       })
       .catch((error) => {
         console.error("Error fetching author by ID:", error);
       });
   };
 
+  const createBook = async (formData: FormData) => {
+    try {
+      const response = await axios.post('http://localhost:3001/books', formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        },
+      });
+      if (response.status === 200) {
+        loadBooks(searchQuery); // Recharge les livres après la création
+        return response.data;
+      } else {
+        throw new Error('Failed to create book');
+      }
+    } catch (error) {
+      console.error('Error creating book:', error);
+      throw error;
+    }
+  };
+
   useEffect(() => {
     loadBooks(searchQuery);
   }, [searchQuery]);
 
-  
   useEffect(() => {
     if (sortType === 'alphabetical') {
       setBooks((prevBooks) => [...prevBooks].sort((a, b) => a.title.localeCompare(b.title)));
@@ -64,10 +81,9 @@ export const useListBookProviders = () => {
     }
   }, [sortType, searchQuery]);
 
-
   const highestRatedBook = useMemo(() => {
-    return books.reduce((topBook, currentBook) => 
-      (topBook && topBook.averageRating >= currentBook.averageRating ? topBook : currentBook), 
+    return books.reduce((topBook, currentBook) =>
+      (topBook && topBook.averageRating >= currentBook.averageRating ? topBook : currentBook),
       null as BookModel | null
     );
   }, [books]);
@@ -78,7 +94,8 @@ export const useListBookProviders = () => {
     setSearchQuery,
     setSortType,
     loadBookById,
-    highestRatedBook, 
-    deleteBook, 
+    highestRatedBook,
+    deleteBook,
+    createBook,
   };
 };
