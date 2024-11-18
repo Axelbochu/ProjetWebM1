@@ -1,6 +1,9 @@
 import Image from 'next/image';
 import { useRouter } from 'next/navigation'; // Importation du hook useRouter
 import React from 'react';
+import Breadcrumbs from "@mui/material/Breadcrumbs"; // Import Breadcrumbs
+import Link from "next/link"; // Import Link for navigation
+import Typography from "@mui/material/Typography"; // For the current item
 
 interface Book_data {
   coverImage: string;
@@ -36,6 +39,17 @@ export const BookDesc: React.FC<Book_data> = ({ coverImage, book_name, price, ra
     <div className={`flex ${hauteur} ${largeur}`}> {/* Conteneur principal en flex */}
       {/* Section gauche pour les détails du livre */}
       <div className="flex flex-col w-2/3 p-4 space-y-4">
+      <div className="p-3 -mt-6">
+          <Breadcrumbs aria-label="breadcrumb">
+            <Link href="/" passHref>
+              <Typography color="inherit" component="a">Accueil</Typography>
+            </Link>
+            <Link href="/books" passHref>
+              <Typography color="inherit" component="a">Livres</Typography>
+            </Link>
+            <Typography color="text.primary">{book_name || "Détails du livre"}</Typography>
+          </Breadcrumbs>
+        </div>
         {/* Titre du livre */}
         <div className="p-3">
           <h1 className="font-elegant text-5xl text-custom-dark">{book_name}</h1>

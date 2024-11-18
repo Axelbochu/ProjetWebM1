@@ -17,13 +17,13 @@ import CloseIcon from "@mui/icons-material/Close";
 
 function BookDetails() {
   const [isAdmin, setIsAdmin] = useState(false);
+  const { book, loadBookById } = useListBookProviders();
   const [averageRating, setAverageRating] = useState(0);
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
-  const [, setLocalAdvices] = useState<AdviceModel[]>([]); // Typé comme Advice
-  const { addAdvice } = useAdviceProviders();
+  const [, setLocalAdvices] = useState<AdviceModel[]>([]);
+  const { handleAddAdvice } = useAdviceProviders(book, setLocalAdvices);
   const { id } = useParams();
-  const { book, loadBookById } = useListBookProviders();
-  const [sortOrder, setSortOrder] = useState<"asc" | "desc">("desc"); // État pour le tri
+  const [sortOrder, setSortOrder] = useState<"asc" | "desc">("desc");
   
   // Charger les détails du livre
   useEffect(() => {
@@ -59,30 +59,8 @@ function BookDetails() {
     setIsDrawerOpen(!isDrawerOpen);
   };
 
-  // Ajouter un nouvel avis
-  const handleAddAdvice = async (newAdvice: { comment: string; stars: number }) => {
-    window.location.reload();
-    if (!book?.id) {
-      console.error("ID du livre manquant");
-      return;
-    }
 
-    const adviceWithBookId: AdviceModel = {
-    
-      stars: newAdvice.stars,
-      comment: newAdvice.comment,
-      creationDate: new Date().toISOString(),
-      bookId: book.id,
-    };
-
-    try {
-      const addedAdvice = await addAdvice(adviceWithBookId);
-      console.log("Avis ajouté : ", addedAdvice);
-      setLocalAdvices((prevAdvices) => [...prevAdvices, addedAdvice]); // Mettre à jour les avis locaux
-    } catch (error) {
-      console.error("Erreur lors de l'ajout de l'avis :", error);
-    }
-  };
+  
 
   return (
     <GlobalLayout>

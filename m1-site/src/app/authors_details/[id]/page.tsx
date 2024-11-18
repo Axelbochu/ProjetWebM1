@@ -58,7 +58,7 @@ function AuthorsDetails() {
         largeur={"w-full"}
       />
       
-      <div className="flex flex-wrap gap-8 ml-10 mt-10">
+      <div className="flex flex-wrap gap-8 ml-10 mt-20">
         {/* Affichage dynamique des livres de l'auteur */}
         {author?.books && author.books.length > 0 ? (author.books.map((book, index) => (
                 <BookCard
