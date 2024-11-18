@@ -36,6 +36,15 @@ export const useListAuthorProviders = () => {
         console.error("Error fetching author by ID:", error);
       });
   };
+  const deleteAuthor = (id: string) => {
+    const url = `http://localhost:3001/authors/${encodeURIComponent(id)}`;
+
+    axios.delete(url)
+
+      .catch((error) => {
+        console.error("Error deleting author:", error);
+      });
+  }
   const createAuthor = async (formData: FormData) => {
     try {
       const response = await axios.post('http://localhost:3001/authors', formData, {
@@ -54,6 +63,24 @@ export const useListAuthorProviders = () => {
       throw error;
     }
   };
+  const updateAuthor = async (formData: FormData, id: string) => {
+    try {
+      const response = await axios.patch(`http://localhost:3001/authors/${encodeURIComponent(id)}`, formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        },
+      });
+      if (response.status === 201) {
+       
+        return response.data;
+      } else {
+        throw new Error('Failed to update authors');
+      }
+    } catch (error) {
+      console.error('Error creating authors:', error);
+      throw error;
+    }
+  };
   // Effet pour charger les auteurs quand la requête change
   useEffect(() => {
     loadAuthors(searchQuery);
@@ -63,7 +90,9 @@ export const useListAuthorProviders = () => {
     authors,
     author, // État pour un seul auteur
     setSearchQuery, // Fonction pour mettre à jour la requête
-    loadAuthorById, // Fonction pour charger un auteur par ID
-    createAuthor
+    loadAuthorById,
+    deleteAuthor, // Fonction pour charger un auteur par ID
+    createAuthor,
+    updateAuthor
   };
 };

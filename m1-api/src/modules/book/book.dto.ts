@@ -30,7 +30,8 @@ export class UpdateBookDto {
   @IsOptional()
   @IsString()
   title: string;
-
+  
+  @Transform(({ value }) => parseInt(value, 10)) // Convertit automatiquement en nombre
   @IsOptional()
   @IsInt()
   @Max(new Date().getFullYear(), {
@@ -43,6 +44,7 @@ export class UpdateBookDto {
   @IsString()
   authorId: string;
 
+  @Transform(({ value }) => (value ? parseFloat(value) : undefined)) // Gestion optionnelle des nombres
   @IsNumber()
   @IsOptional()
   price?: number;

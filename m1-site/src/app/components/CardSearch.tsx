@@ -1,6 +1,7 @@
 import React from 'react';
 import Image from 'next/image';
-import '../App.css'
+import '../App.css';
+
 interface BookCardProps {
   coverImage: string;
   title: string;
@@ -8,7 +9,8 @@ interface BookCardProps {
   line2: number;
   rating: number;
   isBook: boolean;
-  isAdmin?: boolean; // Ajout de la propriété pour indiquer le mode admin
+  hasBooks?: boolean; 
+  isAdmin?: boolean; 
   onClick?: () => void;
 }
 
@@ -19,7 +21,8 @@ export const Card: React.FC<BookCardProps> = ({
   line2,
   rating,
   isBook,
-  isAdmin = false, // Par défaut, non-admin
+  hasBooks = false, 
+  isAdmin = false, 
   onClick,
 }) => {
   const renderStars = () => {
@@ -34,6 +37,22 @@ export const Card: React.FC<BookCardProps> = ({
     return stars;
   };
 
+  const getOverlayStyle = () => {
+    if (isAdmin) {
+      if (!isBook && hasBooks) {
+        return {
+          bgColor: 'bg-orange-500 bg-opacity-50 p-1',
+          text: 'Supprimer les livres en premier',
+        };
+      } else {
+        return { bgColor: 'bg-red-500 bg-opacity-50', text: 'Cliquez pour supprimer' };
+      }
+    }
+    return null;
+  };
+
+  const overlay = getOverlayStyle();
+
   return (
     <div
       className="bg-white w-56 h-96 rounded-xl overflow-hidden shadow-xl hover:scale-105 hover:shadow-2xl transform duration-500 cursor-pointer flex flex-col mt-4 mb-4 relative"
@@ -41,10 +60,12 @@ export const Card: React.FC<BookCardProps> = ({
       role="button"
       aria-label={`Voir plus d'infos sur ${title}`}
     >
-      {/* Superposition rouge si isAdmin est vrai */}
-      {isAdmin && (
-        <div className="absolute inset-0 bg-red-500 bg-opacity-50 flex items-center justify-center z-10">
-          <span className="text-white font-bold text-lg">Cliquez pour supprimer</span>
+
+      {overlay && (
+        <div
+          className={`absolute inset-0 ${overlay.bgColor} flex items-center justify-center z-10`}
+        >
+          <span className="text-white font-bold text-lg text-center">{overlay.text}</span>
         </div>
       )}
 

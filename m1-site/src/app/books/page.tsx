@@ -71,7 +71,7 @@ function Books() {
       
       </div>
 
-      {modalDeleteIsOpen ? <ModalDelete setModalDeleteIsOpen={setModalDeleteIsOpen} id={selectedId}/> : <></>}
+      {modalDeleteIsOpen ? <ModalDelete setModalDeleteIsOpen={setModalDeleteIsOpen} id={selectedId} isBook={true}/> : <></>}
       {modalAddBookIsOpen ? <ModalAddBook setModalAddBookIsOpen={setModalAddBookIsOpen} /> : <></>}
 
       <ButtonAdmin onClick={() => setModalAddBookIsOpen(true)} className={`bg-custom-light mb-12 hover:bg-red-400`} aria-label="Authors">
@@ -79,7 +79,7 @@ function Books() {
       </ButtonAdmin>
 
       <ButtonAdmin onClick={handleAdminButtonClick} className={getButtonStyle()} aria-label="Authors">
-        <Image src="/images/icon/icons8-paramètres-24.png" alt="Avatar" width={24} height={24} />
+        <Image src="/images/icon/icons8-trash-can-24.png" alt="Avatar" width={24} height={24} />
       </ButtonAdmin>
     </GlobalLayout>
   );

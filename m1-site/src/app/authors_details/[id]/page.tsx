@@ -11,7 +11,7 @@ import { ModalAddBook } from "../../components/ModalAddBook";
 import { ModalDelete } from "../../components/ModalDelete";
 import { GlobalLayout } from "../../GlobalLayout";
 import { useListAuthorProviders } from '../../providers/useAuthorsProviders';
-
+import { ModalModifAuthor } from "../../components/ModalModifAuthor";
 function AuthorsDetails() {
   const [isAdmin, setIsAdmin] = useState(false); // Déclare une variable d'état pour le bouton
   const router = useRouter(); // Initialisation du router
@@ -20,6 +20,7 @@ function AuthorsDetails() {
   const [modalDeleteIsOpen, setModalDeleteIsOpen] = useState(false);
   const [selectedId, setSelectedId] = useState('');
   const [modalAddBookIsOpen, setModalAddBookIsOpen] = useState(false);
+  const [modalModifAuthorIsOpen, setmodalModifAuthorIsOpen] = useState(false);
 
   useEffect(() => {
     if (typeof id === "string" && id !== author?.id) {
@@ -87,12 +88,18 @@ function AuthorsDetails() {
         )}
       </div>
       
-      {modalDeleteIsOpen ? <ModalDelete setModalDeleteIsOpen={setModalDeleteIsOpen} id={selectedId}/> : <></>}
+      {modalDeleteIsOpen ? <ModalDelete setModalDeleteIsOpen={setModalDeleteIsOpen} id={selectedId} isBook={true}/> : <></>}
       {modalAddBookIsOpen ? <ModalAddBook setModalAddBookIsOpen={setModalAddBookIsOpen} /> : <></>}
+      {modalModifAuthorIsOpen ? <ModalModifAuthor setmodalModifAuthorIsOpen={setmodalModifAuthorIsOpen} id={author?.id || "0"}  /> : <></>}
 
+      <ButtonAdmin onClick={()=>setmodalModifAuthorIsOpen(true)} className={"mb-12"} aria-label="Authorr">
+        <Image src="/images/icon/icons8-modif-24.png" alt="Avatar" width={24} height={24} />
+      </ButtonAdmin>
+      
       <ButtonAdmin onClick={handleAdminButtonClick} className={getButtonStyle()} aria-label="Authors">
         <Image src="/images/icon/icons8-paramètres-24.png" alt="Avatar" width={24} height={24} />
       </ButtonAdmin>
+
       
     </GlobalLayout>
   );

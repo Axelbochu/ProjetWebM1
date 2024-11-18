@@ -26,14 +26,15 @@ function Authors(){
   const handleAdminButtonClick = () => {
     setIsAdmin(!isAdmin); // Inverser l'état de isAdmin (true/false)
   };
-  const handleDelAuthor = (id: string) => {
+  const handleDelAuthor = (id: string, bookcount :number ) => {
     if (!isAdmin) {
       router.push(`/authors_details/${id}`)
     }
-    else {
+    else if(bookcount == 0) {
       setSelectedId(id);
       setModalDeleteIsOpen(true);
     }
+    
   }
     return(
         
@@ -55,20 +56,21 @@ function Authors(){
             line2={author.bookCount || 0}
             rating={author.averageRating || 0}
             isBook={false}
-            onClick={() => handleDelAuthor(author.id)}
+            hasBooks={author.bookCount > 0}
+            onClick={() => handleDelAuthor(author.id, author.bookCount)} 
             isAdmin={isAdmin}
           />
           )
         ))}
       </div>
-      {modalDeleteIsOpen ? <ModalDelete setModalDeleteIsOpen={setModalDeleteIsOpen} id={selectedId}/> : <></>}
+      {modalDeleteIsOpen ? <ModalDelete setModalDeleteIsOpen={setModalDeleteIsOpen} id={selectedId} isBook={false}/> : <></>}
       {modalAddAuthorIsOpen ? <ModalAddAuthor setModalAddAuthorIsOpen={setModalAddAuthorIsOpen} /> : <></>}
 
       <ButtonAdmin onClick={() => setModalAddAuthorIsOpen(true)} className={`mb-12 hover:bg-red-400`} aria-label="Authors">
         <Image src="/images/icon/icons8-ajouter-50.png" alt="" width={24} height={24} />
       </ButtonAdmin>
       <ButtonAdmin onClick={handleAdminButtonClick} className={getButtonStyle()} aria-label="Authors">
-        <Image src="/images/icon/icons8-paramètres-24.png" alt="Avatar" width={24} height={24} />
+        <Image src="/images/icon/icons8-trash-can-24.png" alt="Avatar" width={24} height={24} />
       </ButtonAdmin>
         </GlobalLayout>
         

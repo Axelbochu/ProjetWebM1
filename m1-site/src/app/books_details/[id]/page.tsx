@@ -135,7 +135,7 @@ function BookDetails() {
           </div>
         </Drawer>
       </div>
-
+    
       <ButtonAdmin onClick={() => setIsAdmin(!isAdmin)} className={isAdmin ? "bg-red-400" : "bg-custom-light"} aria-label="Authors">
         <Image src="/images/icon/icons8-paramètres-24.png" alt="Avatar" width={24} height={24} />
       </ButtonAdmin>

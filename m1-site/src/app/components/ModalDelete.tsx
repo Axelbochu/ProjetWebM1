@@ -1,14 +1,30 @@
 import React from "react";
 import { useListBookProviders } from "../providers/useBookProviders";
+import { useListAuthorProviders } from "../providers/useAuthorsProviders";
 
 interface ModalProps {
   setModalDeleteIsOpen: React.Dispatch<React.SetStateAction<boolean>>;
   id: string;
+  isBook: boolean;
   onClick?: () => void;
 }
 
-export const ModalDelete: React.FC<ModalProps> = ({ setModalDeleteIsOpen, id, onClick }) => {
+export const ModalDelete: React.FC<ModalProps> = ({ setModalDeleteIsOpen, id, isBook }) => {
   const { deleteBook } = useListBookProviders(); 
+  const { deleteAuthor } = useListAuthorProviders(); 
+
+  const handleDelBook = (id: string) => {
+  if (isBook) {
+
+    deleteBook(id);
+    }
+    else{
+    deleteAuthor(id);
+
+    }
+    
+    window.location.reload();
+  }
   return (
     <>
       <div className="fixed inset-0 bg-black bg-opacity-20 z-0" onClick={() => setModalDeleteIsOpen(false)} />
@@ -23,10 +39,7 @@ export const ModalDelete: React.FC<ModalProps> = ({ setModalDeleteIsOpen, id, on
           <div className="flex justify-around">
             <button
               className="bg-red-600 text-white font-semibold py-2 px-4 rounded-lg shadow-lg hover:shadow-red-600/50 hover:translate-y-[-5px] transition-all duration-200"
-              onClick={() => {
-                deleteBook(id);
-                window.location.reload();
-              }}
+              onClick={() => handleDelBook(id)}
             >
               Supprimer
             </button>
