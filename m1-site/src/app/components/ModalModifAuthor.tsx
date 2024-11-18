@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useListAuthorProviders } from '../providers/useAuthorsProviders'; // Importez le provider de livres
+import { useListAuthorProviders } from '../providers/useAuthorsProviders'; // Importez le provider d'auteurs
 
 interface ModalProps {
   setmodalModifAuthorIsOpen: React.Dispatch<React.SetStateAction<boolean>>;
@@ -16,20 +16,23 @@ export const ModalModifAuthor: React.FC<ModalProps> = ({ setmodalModifAuthorIsOp
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    const formData = new FormData();
-    formData.append('firstName', name);
-    formData.append('lastName', surname);
-    formData.append('biography', biography);
+    const authorData = {
+      firstName: name,
+      lastName: surname,
+      biography: biography,
+    };
+
+    console.log("Payload:", authorData);
 
     try {
       console.log("Modification en cours...");
-      const data = await updateAuthor(formData, id);
+      const data = await updateAuthor(authorData, id); // Modifiez votre fonction pour accepter un JSON
       console.log('Auteur modifié avec succès', data);
     } catch (error) {
       console.error('Erreur lors de la modification de l\'auteur:', error);
     }
     setmodalModifAuthorIsOpen(false); // Fermez le modal après la modification
-    //window.location.reload(); // Rechargez la page pour voir les changements
+    window.location.reload(); // Rechargez la page pour voir les changements (optionnel)
   };
 
   return (

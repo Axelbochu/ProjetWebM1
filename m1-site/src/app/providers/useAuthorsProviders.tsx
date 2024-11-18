@@ -63,24 +63,30 @@ export const useListAuthorProviders = () => {
       throw error;
     }
   };
-  const updateAuthor = async (formData: FormData, id: string) => {
-    try {
-      const response = await axios.patch(`http://localhost:3001/authors/${encodeURIComponent(id)}`, formData, {
-        headers: {
-          'Content-Type': 'multipart/form-data',
-        },
-      });
-      if (response.status === 201) {
-       
-        return response.data;
-      } else {
-        throw new Error('Failed to update authors');
+  
+    const updateAuthor = async (authorData: { firstName: string; lastName: string; biography: string }, id: string) => {
+      try {
+        const response = await axios.patch(
+          `http://localhost:3001/authors/${encodeURIComponent(id)}`, 
+          authorData,  // Utilisation de l'objet JSON
+          {
+            headers: {
+              'Content-Type': 'application/json',  // Définir l'en-tête approprié pour JSON
+            },
+          }
+        );
+    
+        if (response.status === 200) {
+          console.log('Auteur modifié avec succès', response.data);
+          return response.data;
+        } else {
+          throw new Error('Failed to update authors');
+        }
+      } catch (error) {
+        console.error('Erreur lors de la modification de l\'auteur:', error);
+        throw error;
       }
-    } catch (error) {
-      console.error('Error creating authors:', error);
-      throw error;
-    }
-  };
+    };
   // Effet pour charger les auteurs quand la requête change
   useEffect(() => {
     loadAuthors(searchQuery);

@@ -15,10 +15,10 @@ export const AuthorDesc: React.FC<Author_data> = ({ coverImage, author_name, bio
             <div className="p-3 -mt-6">
                 <Breadcrumbs aria-label="breadcrumb">
                   <Link href="/" passHref>
-                    <Typography color="inherit" component="a">Accueil</Typography>
+                    <Typography color="inherit" >Accueil</Typography>
                   </Link>
                   <Link href="/authors" passHref>
-                    <Typography color="inherit" component="a">Auteurs</Typography>
+                    <Typography color="inherit" >Auteurs</Typography>
                   </Link>
                   <Typography color="text.primary">{author_name || "Détails de l'auteur"}</Typography>
                 </Breadcrumbs>
