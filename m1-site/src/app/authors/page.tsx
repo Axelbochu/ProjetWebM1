@@ -5,6 +5,10 @@ import { GlobalLayout } from "../GlobalLayout";
 import { Card } from '../components/CardSearch';
 import { SearchBar } from '../components/searchBar';
 import { useListAuthorProviders } from '../providers/useAuthorsProviders';
+import { ButtonAdmin } from "../components/BoutonAdmin";
+import { useState } from "react";
+import { ModalAddAuthor } from "../components/ModalAddAuthor";
+import Image from "next/image";
 
 import { AuthorModel } from '../models/AuthorsModel';
 
@@ -12,6 +16,12 @@ function Authors(){
  
   const router = useRouter();
   const { authors , setSearchQuery } = useListAuthorProviders();
+  const [modalAddAuthorIsOpen, setModalAddAuthorIsOpen] = useState(false);
+  const [isAdmin, setIsAdmin] = useState(false); // Déclare une variable d'état pour le bouton
+
+  // const getButtonStyle = () => {
+  //   return isAdmin ? "bg-red-400" : "bg-custom-light"; // Appliquer un style différent si isAdmin est true
+  // };
 
     return(
         
@@ -38,6 +48,12 @@ function Authors(){
           )
         ))}
       </div>
+
+      {modalAddAuthorIsOpen ? <ModalAddAuthor setModalAddAuthorIsOpen={setModalAddAuthorIsOpen} /> : <></>}
+
+      <ButtonAdmin onClick={() => setModalAddAuthorIsOpen(true)} className={`mb-12`} aria-label="Authors">
+        <Image src="/images/icon/icons8-ajouter-50.png" alt="" width={24} height={24} />
+      </ButtonAdmin>
 
         </GlobalLayout>
         
